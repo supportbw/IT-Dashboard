@@ -189,15 +189,7 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
 .t-tag.waiting{background:#f0f4ff;color:#334488}
 .t-who{font-size:11px;color:var(--text-muted)}
 .t-date{font-size:11px;color:var(--text-muted);margin-left:auto;flex-shrink:0}
-/* visibility toggle */
-.pub-toggle{display:flex;align-items:center;gap:5px;flex-shrink:0;cursor:pointer}
-.toggle-wrap{position:relative;width:30px;height:16px}
-.toggle-track{width:30px;height:16px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);transition:all .2s;position:absolute;inset:0}
-.task-item.vis .toggle-track{background:var(--blue-primary);border-color:var(--blue-primary)}
-.toggle-knob{position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:white;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s}
-.task-item.vis .toggle-knob{left:16px}
-.toggle-label{font-size:9.5px;color:var(--text-muted);white-space:nowrap}
-.task-item.vis .toggle-label{color:var(--blue-primary)}
+
 
 /* ── MODALS ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,68,.55);z-index:200;align-items:center;justify-content:center}
@@ -235,7 +227,7 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
   </div>
   <div class="header-right">
     <div class="status-pill"><div class="status-dot"></div>All Systems Monitored</div>
-    <a href="https://supportbw.github.io/IT-Dashboard/index.html" target="_blank" class="admin-btn">
+    <a href="adminportal.html" target="_blank" class="admin-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 1 0 4.93 19.07m14.14-14.14L22 2m-2.93 2.93L16 8"/></svg>
       Admin Portal
     </a>
@@ -345,9 +337,9 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
         <div class="tb-head">
           <div>
             <h3>IT Task Board</h3>
-            <div class="tb-sub">Toggle to show tasks on this portal</div>
+            <div class="tb-sub">Active IT tasks &amp; issues</div>
           </div>
-          <a href="https://supportbw.github.io/IT-Dashboard/index.html" target="_blank" class="admin-link">
+          <a href="adminportal.html" target="_blank" class="admin-link">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Open Admin
           </a>
@@ -509,9 +501,15 @@ function renderAnnouncements(){
 let curFilter='all';
 function renderTasks(f){
   if(f) curFilter=f;
-  const list = TASKS.filter(t=>curFilter==='all'||t.status===curFilter);
-  document.getElementById('taskList').innerHTML = list.map(t=>`
-    <div class="task-item ${t.vis?'vis':''}" id="ti${t.id}">
+  // Only show tasks marked visible by admin
+  const list = TASKS.filter(t=>t.vis && (curFilter==='all'||t.status===curFilter));
+  const el = document.getElementById('taskList');
+  if(list.length===0){
+    el.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">No tasks to display.</div>';
+    return;
+  }
+  el.innerHTML = list.map(t=>`
+    <div class="task-item" id="ti${t.id}">
       <div class="t-prio ${t.prio}"></div>
       <div class="t-body">
         <div class="t-title">${t.title}</div>
@@ -520,10 +518,6 @@ function renderTasks(f){
           <span class="t-who">${t.who}</span>
           <span class="t-date">${t.date}</span>
         </div>
-      </div>
-      <div class="pub-toggle" onclick="toggleVis(${t.id})" title="${t.vis?'Hide from portal':'Show on portal'}">
-        <div class="toggle-wrap"><div class="toggle-track"></div><div class="toggle-knob"></div></div>
-        <span class="toggle-label">${t.vis?'Shown':'Hidden'}</span>
       </div>
     </div>`).join('');
 }
@@ -534,15 +528,7 @@ function filterTasks(f,btn){
   renderTasks(f);
 }
 
-function toggleVis(id){
-  const t=TASKS.find(t=>t.id===id);
-  if(!t)return;
-  t.vis=!t.vis;
-  renderTasks();
-  showToast(t.vis?'✓ Task is now visible on the portal':'Task hidden from the portal');
-}
 
-// ── CHAT ───────────────────────────────────────────────────
 function sendMsg(){
   const inp=document.getElementById('chatInput');
   const txt=inp.value.trim();

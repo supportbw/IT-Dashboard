@@ -598,6 +598,28 @@
   /* ── TASK BOARD ── */
   .task-board { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; align-items:start; }
 
+  /* Portal visibility toggle */
+  .portal-toggle {
+    display:flex; align-items:center; gap:6px; margin-top:10px;
+    padding-top:9px; border-top:1px solid var(--border);
+    cursor:pointer; user-select:none;
+  }
+  .ptoggle-track {
+    position:relative; width:34px; height:18px; border-radius:9px;
+    background:var(--surface-2); border:1px solid var(--border);
+    transition:all .2s; flex-shrink:0;
+  }
+  .ptoggle-knob {
+    position:absolute; top:3px; left:3px; width:10px; height:10px;
+    border-radius:50%; background:var(--text-muted);
+    transition:left .2s, background .2s;
+  }
+  .portal-toggle.on .ptoggle-track { background:var(--blue-primary); border-color:var(--blue-primary); }
+  .portal-toggle.on .ptoggle-knob  { left:19px; background:white; }
+  .ptoggle-label { font-size:10.5px; font-weight:600; color:var(--text-muted); }
+  .portal-toggle.on .ptoggle-label { color:var(--blue-primary); }
+  .ptoggle-icon { font-size:11px; }
+
   .task-column {
     background: white;
     border:1px solid var(--border);
@@ -1836,6 +1858,11 @@
               <button class="task-btn" onclick="viewTask(this)">View</button>
               <button class="task-btn move" onclick="moveTask(this,'inprog')">▶ Start</button>
             </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
+            </div>
           </div>
           <div class="task-card" data-agent="Marie Leblanc" data-priority="High">
             <div class="task-card-top">
@@ -1853,6 +1880,11 @@
             <div class="task-actions">
               <button class="task-btn" onclick="viewTask(this)">View</button>
               <button class="task-btn move" onclick="moveTask(this,'inprog')">▶ Start</button>
+            </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
             </div>
           </div>
           <div class="task-card" data-agent="Ravi Singh" data-priority="Medium">
@@ -1872,6 +1904,11 @@
               <button class="task-btn" onclick="viewTask(this)">View</button>
               <button class="task-btn move" onclick="moveTask(this,'inprog')">▶ Start</button>
             </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
+            </div>
           </div>
           <div class="task-card" data-agent="Alex Turner" data-priority="Low">
             <div class="task-card-top">
@@ -1889,6 +1926,11 @@
             <div class="task-actions">
               <button class="task-btn" onclick="viewTask(this)">View</button>
               <button class="task-btn move" onclick="moveTask(this,'inprog')">▶ Start</button>
+            </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
             </div>
           </div>
         </div>
@@ -1919,6 +1961,11 @@
               <button class="task-btn" onclick="moveTask(this,'todo')">◀ Back</button>
               <button class="task-btn move" onclick="moveTask(this,'review')">▶ Review</button>
             </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
+            </div>
           </div>
           <div class="task-card" data-agent="Ravi Singh" data-priority="Medium">
             <div class="task-card-top">
@@ -1937,6 +1984,11 @@
               <button class="task-btn" onclick="moveTask(this,'todo')">◀ Back</button>
               <button class="task-btn move" onclick="moveTask(this,'review')">▶ Review</button>
             </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
+            </div>
           </div>
           <div class="task-card" data-agent="Alex Turner" data-priority="Medium">
             <div class="task-card-top">
@@ -1954,6 +2006,11 @@
             <div class="task-actions">
               <button class="task-btn" onclick="moveTask(this,'todo')">◀ Back</button>
               <button class="task-btn move" onclick="moveTask(this,'review')">▶ Review</button>
+            </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
             </div>
           </div>
         </div>
@@ -1984,6 +2041,11 @@
               <button class="task-btn" onclick="moveTask(this,'inprog')">◀ Back</button>
               <button class="task-btn move" onclick="moveTask(this,'done')">✓ Done</button>
             </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
+            </div>
           </div>
           <div class="task-card" data-agent="Ravi Singh" data-priority="Low">
             <div class="task-card-top">
@@ -2001,6 +2063,11 @@
             <div class="task-actions">
               <button class="task-btn" onclick="moveTask(this,'inprog')">◀ Back</button>
               <button class="task-btn move" onclick="moveTask(this,'done')">✓ Done</button>
+            </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
             </div>
           </div>
         </div>
@@ -2027,6 +2094,11 @@
             <div class="task-actions">
               <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
             </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
+            </div>
           </div>
           <div class="task-card" data-agent="Marie Leblanc" data-priority="Medium" style="opacity:.7">
             <div class="task-card-top">
@@ -2040,6 +2112,11 @@
             </div>
             <div class="task-actions">
               <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
+            </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
             </div>
           </div>
           <div class="task-card" data-agent="Ravi Singh" data-priority="Low" style="opacity:.7">
@@ -2055,6 +2132,11 @@
             <div class="task-actions">
               <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
             </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
+            </div>
           </div>
           <div class="task-card" data-agent="Alex Turner" data-priority="Medium" style="opacity:.7">
             <div class="task-card-top">
@@ -2069,6 +2151,11 @@
             <div class="task-actions">
               <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
             </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
+            </div>
           </div>
           <div class="task-card" data-agent="Marie Leblanc" data-priority="High" style="opacity:.7">
             <div class="task-card-top">
@@ -2082,6 +2169,11 @@
             </div>
             <div class="task-actions">
               <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
+            </div>
+            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
+              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
+              <span class="ptoggle-icon">👁️</span>
+              <span class="ptoggle-label">Hidden from portal</span>
             </div>
           </div>
         </div>
@@ -2648,6 +2740,23 @@ function createNewTask() {
   // Reset
   ['nt-title','nt-desc','nt-dept'].forEach(id => document.getElementById(id).value = '');
   showToast('✅ Task added to the board!');
+}
+
+function togglePortalVis(el) {
+  el.classList.toggle('on');
+  const label = el.querySelector('.ptoggle-label');
+  if (el.classList.contains('on')) {
+    label.textContent = 'Visible on portal';
+  } else {
+    label.textContent = 'Hidden from portal';
+  }
+  // Visual feedback
+  const card = el.closest('.task-card');
+  const title = card ? card.querySelector('.task-title') : null;
+  if (title) {
+    title.style.color = el.classList.contains('on') ? 'var(--blue-primary)' : '';
+  }
+  showToast(el.classList.contains('on') ? '✅ Task is now visible on the staff portal' : '🔒 Task hidden from the staff portal');
 }
 
 function moveTask(btn, targetCol) {
