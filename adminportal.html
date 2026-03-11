@@ -1,6 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+(function() {
+  var SESSION_KEY = 'bw_auth_ok';
+  var HASH = '1cf64f4c7b58cc8f1b3f313b91c6ead932df7e442dbe6c1813bfde3334613a82'; // Change password by updating this hash
+
+  function sha256(str) {
+    // Simple SHA-256 via SubtleCrypto
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str))
+      .then(function(buf) {
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+      });
+  }
+
+  function showGate() {
+    document.body.style.display = 'none';
+    var gate = document.createElement('div');
+    gate.id = 'bw-gate';
+    gate.innerHTML = `
+      <style>
+        #bw-gate {
+          position:fixed;inset:0;z-index:99999;
+          background:linear-gradient(135deg,#000044 0%,#003399 60%,#0055cc 100%);
+          display:flex;align-items:center;justify-content:center;font-family:'Segoe UI',sans-serif;
+        }
+        #bw-box {
+          background:white;border-radius:16px;padding:40px 48px;width:360px;
+          box-shadow:0 20px 60px rgba(0,0,0,0.4);text-align:center;
+        }
+        #bw-box img { height:48px; margin-bottom:8px; }
+        #bw-box h2 { color:#000044;font-size:18px;margin:0 0 4px; }
+        #bw-box p  { color:#6b7280;font-size:13px;margin:0 0 24px; }
+        #bw-pw {
+          width:100%;box-sizing:border-box;padding:12px 14px;
+          border:2px solid #e5e7eb;border-radius:8px;font-size:14px;
+          outline:none;transition:border .2s;
+        }
+        #bw-pw:focus { border-color:#0055cc; }
+        #bw-btn {
+          width:100%;margin-top:12px;padding:12px;
+          background:#000044;color:white;border:none;border-radius:8px;
+          font-size:14px;font-weight:600;cursor:pointer;transition:background .2s;
+        }
+        #bw-btn:hover { background:#003399; }
+        #bw-err { color:#dc2626;font-size:12px;margin-top:8px;display:none; }
+        .bw-stripe {
+          height:4px;border-radius:0 0 4px 4px;margin-top:24px;
+          background:repeating-linear-gradient(90deg,
+            #000044 0,#000044 14px,#0066cc 14px,#0066cc 32px,
+            #cce8ff 32px,#cce8ff 44px,#0055dd 44px,#0055dd 60px,
+            #003399 60px,#003399 72px);
+        }
+      </style>
+      <div id="bw-box">
+        <h2>Bluewater IT Portal</h2>
+        <p>Please enter your access password</p>
+        <input id="bw-pw" type="password" placeholder="Password" autocomplete="current-password" />
+        <button id="bw-btn">Sign In →</button>
+        <div id="bw-err">Incorrect password. Please try again.</div>
+        <div class="bw-stripe"></div>
+      </div>
+    `;
+    document.documentElement.appendChild(gate);
+
+    function attempt() {
+      sha256(document.getElementById('bw-pw').value).then(function(h) {
+        if (h === HASH) {
+          sessionStorage.setItem(SESSION_KEY, '1');
+          gate.remove();
+          document.body.style.display = '';
+        } else {
+          document.getElementById('bw-err').style.display = 'block';
+          document.getElementById('bw-pw').value = '';
+          document.getElementById('bw-pw').focus();
+        }
+      });
+    }
+
+    document.getElementById('bw-btn').addEventListener('click', attempt);
+    document.getElementById('bw-pw').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') attempt();
+    });
+    setTimeout(function(){ document.getElementById('bw-pw').focus(); }, 100);
+  }
+
+  if (sessionStorage.getItem(SESSION_KEY) !== '1') {
+    if (document.body) { showGate(); }
+    else { document.addEventListener('DOMContentLoaded', showGate); }
+  }
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bluewater IT Admin Portal</title>
