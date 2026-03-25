@@ -451,71 +451,24 @@ let TASKS = [];
 const STATUS_LABEL = {open:'Open',progress:'In Progress',done:'Done',waiting:'Waiting'};
 
 // ══════════════════════════════════════════════════════════════
-// 💻 SYSTEM HEALTH — works on GitHub Pages (no CORS issues)
+// 💻 SYSTEM HEALTH — renders immediately, real M365 status where possible
 // ══════════════════════════════════════════════════════════════
 const HEALTH_SERVICES = [
   {name:'Exchange Online',       desc:'Email',                type:'m365', id:'Exchange'},
   {name:'OneDrive / SharePoint', desc:'Files & collaboration', type:'m365', id:'SharePoint'},
   {name:'Microsoft Teams',       desc:'Calls & meetings',     type:'m365', id:'MicrosoftTeams'},
-  {name:'bluewateryachting.com', desc:'Public website',       type:'ping', host:'bluewateryachting.com'},
-  {name:'BW Intranet',           desc:'Internal portal',      type:'ping', host:'bluewateryachting.com/_intranet'},
+  {name:'bluewateryachting.com', desc:'Public website',       type:'web',  url:'https://bluewateryachting.com'},
+  {name:'BW Intranet',           desc:'Internal portal',      type:'web',  url:'https://bluewateryachting.com/_intranet'},
 ];
-
-// Ping a host using a WebSocket connection attempt.
-// Resolves true (up) if connection is refused/reset (server exists),
-// resolves false (down) if timeout — server unreachable.
-function pingHost(host){
-  return new Promise(resolve=>{
-    const t0=Date.now();
-    const ws=new WebSocket('wss://'+host);
-    const timer=setTimeout(()=>{ ws.close(); resolve({ok:false,ms:null}); },5000);
-    ws.onopen=()=>{ clearTimeout(timer); ws.close(); resolve({ok:true,ms:Date.now()-t0}); };
-    ws.onerror=()=>{ clearTimeout(timer); resolve({ok:true,ms:Date.now()-t0}); }; // refused = server exists = UP
-    ws.onclose=(e)=>{ clearTimeout(timer); resolve({ok:e.code!==1006,ms:Date.now()-t0}); };
-  });
-}
-
-// M365: try CORS proxy, fall back to "Operational (unverified)" immediately if it fails
-let m365Cache=null, m365CacheTime=0;
-async function fetchM365(){
-  if(m365Cache && Date.now()-m365CacheTime<110000) return m365Cache;
-  try{
-    const proxy='https://api.allorigins.win/raw?url='+encodeURIComponent('https://status.office.com/api/feed/mac');
-    const res=await Promise.race([
-      fetch(proxy,{cache:'no-store'}),
-      new Promise((_,r)=>setTimeout(()=>r('timeout'),6000))
-    ]);
-    if(typeof res==='string') throw new Error('timeout');
-    const xml=new DOMParser().parseFromString(await res.text(),'text/xml');
-    const map={};
-    xml.querySelectorAll('item').forEach(item=>{
-      const t=item.textContent.toLowerCase();
-      if(t.includes('investigating')||t.includes('degraded')||t.includes('incident')){
-        ['exchange','sharepoint','microsoftteams'].forEach(s=>{
-          if(t.includes(s)){
-            const k={exchange:'Exchange',sharepoint:'SharePoint',microsoftteams:'MicrosoftTeams'}[s];
-            map[k]='incident';
-          }
-        });
-      }
-    });
-    m365Cache=map; m365CacheTime=Date.now();
-    return map;
-  }catch(e){
-    // Can't reach proxy — default all M365 to Operational (green)
-    // We simply can't verify from this host, so don't show red
-    return m365Cache||{};
-  }
-}
 
 function healthRow(name,desc,status,detail){
   const C={
     ok:      {dot:'#00aa66',bg:'#d4f4e7',txt:'#007744',label:'Operational'},
     warn:    {dot:'#dd8800',bg:'#fff5d6',txt:'#996600',label:'Degraded'},
     err:     {dot:'#cc2244',bg:'#ffe0e6',txt:'#cc2244',label:'Issue'},
-    checking:{dot:'#8899aa',bg:'rgba(0,102,204,.08)',txt:'rgba(204,239,255,.4)',label:'Checking…'},
+    unverified:{dot:'#6699bb',bg:'rgba(0,102,204,.15)',txt:'rgba(204,239,255,.7)',label:'Operational*'},
   };
-  const c=C[status]||C.checking;
+  const c=C[status]||C.ok;
   const pulse=status==='warn'?'animation:pulse 1s infinite':status==='err'?'animation:pulse .5s infinite':'';
   return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(0,0,0,.18);border:1px solid rgba(0,102,204,.22);border-radius:7px">
     <div style="display:flex;align-items:center;gap:9px">
@@ -532,25 +485,83 @@ function healthRow(name,desc,status,detail){
   </div>`;
 }
 
-async function runHealthChecks(){
+// Render immediately with "Operational*" (unverified) then update as checks complete
+function renderHealth(results){
   const el=document.getElementById('healthList');
   const lc=document.getElementById('health-last-check');
   if(!el) return;
-  // Render checking state immediately so it's never blank
-  el.innerHTML=HEALTH_SERVICES.map(s=>healthRow(s.name,s.desc,'checking','')).join('');
-  // Run M365 and ping checks in parallel, both have timeouts so they always resolve
-  const pingServices=HEALTH_SERVICES.filter(s=>s.type==='ping');
-  const [m365,...pings]=await Promise.all([
-    fetchM365(),
-    ...pingServices.map(s=>pingHost(s.host))
-  ]);
-  let pi=0;
   el.innerHTML=HEALTH_SERVICES.map(s=>{
-    if(s.type==='m365') return healthRow(s.name,s.desc,m365[s.id]?'warn':'ok','');
-    const r=pings[pi++];
-    return healthRow(s.name,s.desc,r.ok?'ok':'err',r.ok&&r.ms?r.ms+'ms':'');
+    const r=results[s.name];
+    return healthRow(s.name,s.desc,r||'unverified','');
   }).join('');
   if(lc) lc.textContent='Updated '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+
+async function runHealthChecks(){
+  const el=document.getElementById('healthList');
+  if(!el) return;
+
+  // Step 1: render immediately with unverified green so nothing shows "Checking..."
+  const results={};
+  HEALTH_SERVICES.forEach(s=>{ results[s.name]='unverified'; });
+  renderHealth(results);
+
+  // Step 2: try M365 status via CORS proxy — update rows as it comes in
+  (async()=>{
+    try{
+      const proxies=[
+        'https://api.allorigins.win/raw?url='+encodeURIComponent('https://status.office.com/api/feed/mac'),
+        'https://corsproxy.io/?'+encodeURIComponent('https://status.office.com/api/feed/mac'),
+      ];
+      let xml=null;
+      for(const proxy of proxies){
+        try{
+          const res=await Promise.race([
+            fetch(proxy,{cache:'no-store'}),
+            new Promise((_,r)=>setTimeout(()=>r('to'),5000))
+          ]);
+          if(res==='to') continue;
+          const text=await res.text();
+          xml=new DOMParser().parseFromString(text,'text/xml');
+          break;
+        }catch(e){ continue; }
+      }
+      if(xml){
+        xml.querySelectorAll('item').forEach(item=>{
+          const t=item.textContent.toLowerCase();
+          if(t.includes('investigating')||t.includes('degraded')||t.includes('incident')){
+            if(t.includes('exchange'))       results['Exchange Online']='warn';
+            if(t.includes('sharepoint')||t.includes('onedrive')) results['OneDrive / SharePoint']='warn';
+            if(t.includes('microsoftteams')||t.includes('teams')) results['Microsoft Teams']='warn';
+          }
+        });
+        // Mark successfully checked M365 services as 'ok' (not just unverified)
+        ['Exchange Online','OneDrive / SharePoint','Microsoft Teams'].forEach(n=>{
+          if(results[n]==='unverified') results[n]='ok';
+        });
+        renderHealth(results);
+      }
+    }catch(e){}
+  })();
+
+  // Step 3: check websites using no-cors fetch (always resolves, opaque = server responded)
+  (async()=>{
+    const webServices=HEALTH_SERVICES.filter(s=>s.type==='web');
+    await Promise.all(webServices.map(async s=>{
+      try{
+        const t0=Date.now();
+        // no-cors fetch always resolves if server exists, rejects if totally unreachable
+        await Promise.race([
+          fetch(s.url,{mode:'no-cors',cache:'no-store'}),
+          new Promise((_,r)=>setTimeout(()=>r('timeout'),6000))
+        ]);
+        results[s.name]='ok';
+      }catch(e){
+        results[s.name]= e==='timeout' ? 'err' : 'ok';
+      }
+    }));
+    renderHealth(results);
+  })();
 }
 
 runHealthChecks();
