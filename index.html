@@ -527,11 +527,7 @@ const HEALTH = [
   {name:'Printer Network',desc:'Shared print queue',   s:'err', pct:28,  badge:'Issue',       ico:'🖨️'},
 ];
 
-const ANNOUNCEMENTS = [
-  {dot:'blue',  title:'Scheduled Maintenance – File Server',    body:'The file server will undergo maintenance this Saturday 22:00–02:00. Please save all work locally beforehand.',         date:'Mar 9, 2026'},
-  {dot:'green', title:'New IT Self-Service Portal Live',         body:'You can now submit tickets, check system status, and request equipment directly from this portal!',                    date:'Mar 8, 2026'},
-  {dot:'yellow',title:'Windows 11 Upgrade Rollout Starting',    body:'IT will be scheduling Windows 11 upgrades for all staff PCs over the next 3 weeks. Expect a ~30min session per device.',date:'Mar 7, 2026'},
-];
+const ANNOUNCEMENTS = []; // Loaded from localStorage — manage via Admin Portal
 
 let TASKS = [];
 
@@ -570,11 +566,22 @@ function renderHealth(){
     </div>`).join('');
 }
 
-// ── RENDER ANNOUNCEMENTS ───────────────────────────────────
+// ── RENDER ANNOUNCEMENTS — reads from localStorage (managed via Admin Portal) ──
 function renderAnnouncements(){
-  document.getElementById('announceList').innerHTML = ANNOUNCEMENTS.map(a=>`
+  const stored = JSON.parse(localStorage.getItem('bw_announcements') || '[]');
+  const el = document.getElementById('announceList');
+  if (!el) return;
+  if (!stored.length) {
+    el.innerHTML = '<div style="padding:16px;color:var(--text-muted);font-size:13px;font-style:italic;text-align:center">No announcements at this time.</div>';
+    return;
+  }
+  const dotColors = {blue:'var(--blue-primary)', green:'var(--success)', yellow:'var(--warning)', red:'var(--danger)'};
+  el.innerHTML = stored.map(a => `
     <div class="announce-item">
       <div class="a-dot ${a.dot}"></div>
+      <div><div class="a-title">${a.title}</div><div class="a-body">${a.body}</div><div class="a-date">${a.date}</div></div>
+    </div>`).join('');
+}"></div>
       <div><div class="a-title">${a.title}</div><div class="a-body">${a.body}</div><div class="a-date">${a.date}</div></div>
     </div>`).join('');
 }
