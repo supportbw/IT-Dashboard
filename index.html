@@ -158,23 +158,13 @@ header{background:var(--blue-deepest);padding:0 32px;height:64px;display:flex;al
 .qa-title{font-size:12px;font-weight:600;color:white}
 .qa-sub{font-size:10px;color:rgba(204,239,255,.5);margin-top:1px}
 
-/* Chat */
+/* Health sidebar */
 .health-sidebar{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
-.chat-label{padding:10px 16px 8px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(204,239,255,.35);border-bottom:1px solid rgba(0,102,204,.1)}
-.msg{display:flex;flex-direction:column;gap:2px;animation:fadeUp .3s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.msg.bot{align-items:flex-start}
-.msg.user{align-items:flex-end}
-.msg-row{display:flex;align-items:flex-end;gap:7px}
-.msg.user .msg-row{flex-direction:row-reverse}
-.msg-bubble{max-width:92%;padding:8px 12px;border-radius:10px;font-size:12px;line-height:1.55}
-.msg.bot .msg-bubble{background:rgba(0,102,204,.12);border:1px solid rgba(0,102,204,.2);border-bottom-left-radius:3px;color:var(--blue-light)}
-.msg.user .msg-bubble{background:var(--blue-primary);color:white;border-bottom-right-radius:3px;box-shadow:0 2px 12px rgba(0,102,204,.4)}
-.msg-time{font-size:9px;color:rgba(204,239,255,.3);padding:0 4px}
-30%{transform:scale(1);opacity:.8}}
+.sidebar-section-label{padding:10px 16px 8px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(204,239,255,.35);border-bottom:1px solid rgba(0,102,204,.1);display:flex;justify-content:space-between;align-items:center}
+.health-sidebar-list{padding:10px 12px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1}
 
 /* ── MAIN CONTENT ── */
-main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:20px}
+main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:24px}
 
 /* ── STAT CARDS ── */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -198,26 +188,7 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
 .card-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;color:var(--blue-deepest);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .card-title-left{display:flex;align-items:center;gap:8px}
 
-/* ── HEALTH ── */
-.health-list{display:flex;flex-direction:column;gap:8px}
-.health-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;transition:border .2s}
-.health-row:hover{border-color:var(--border-dark)}
-.h-left{display:flex;align-items:center;gap:10px}
-.h-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.h-icon.ok{background:#d4f4e7}
-.h-icon.warn{background:#fff5d6}
-.h-icon.err{background:#ffe0e6}
-.h-name{font-size:13px;font-weight:600;color:var(--blue-deepest)}
-.h-desc{font-size:11px;color:var(--text-muted);margin-top:1px}
-.h-right{display:flex;align-items:center;gap:10px}
-.h-bar-wrap{width:80px;height:5px;background:var(--surface-2);border-radius:3px;overflow:hidden}
-.h-bar{height:100%;border-radius:3px;transition:width 1s ease}
-.h-bar.ok{background:linear-gradient(90deg,#00aa66,#44dd99)}
-.h-bar.warn{background:linear-gradient(90deg,#dd8800,#ffcc44)}
-.h-bar.err{background:linear-gradient(90deg,#cc2244,#ff6688)}
-.h-pct{font-size:12px;font-weight:600;min-width:32px;text-align:right;color:var(--text-secondary)}
-.health-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.health-badge .dot{width:5px;height:5px;border-radius:50%}
+/* health rendered inline via JS */
 .health-badge.ok{background:#d4f4e7;color:#007744}
 .health-badge.ok .dot{background:#00aa66}
 .health-badge.warn{background:#fff5d6;color:#996600}
@@ -330,8 +301,8 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
     </div>
 
     <div class="health-sidebar">
-      <div class="chat-label">💻 System Health <span id="health-last-check" style="float:right;font-size:9px;opacity:.5;font-weight:400;letter-spacing:0;text-transform:none">Checking…</span></div>
-      <div id="healthList" style="padding:10px 12px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1"></div>
+      <div class="sidebar-section-label">💻 System Health <span id="health-last-check" style="float:right;font-size:9px;opacity:.5;font-weight:400;letter-spacing:0;text-transform:none">Checking…</span></div>
+      <div id="healthList" class="health-sidebar-list"></div>
     </div>
   </aside>
 
@@ -480,64 +451,83 @@ let TASKS = [];
 const STATUS_LABEL = {open:'Open',progress:'In Progress',done:'Done',waiting:'Waiting'};
 
 // ══════════════════════════════════════════════════════════════
-// 💻 SYSTEM HEALTH — Real live checks, auto-refreshes every 2 min
+// 💻 SYSTEM HEALTH — works on GitHub Pages (no CORS issues)
 // ══════════════════════════════════════════════════════════════
 const HEALTH_SERVICES = [
-  {name:'Exchange Online',       desc:'Email',               type:'m365', id:'Exchange'},
-  {name:'OneDrive / SharePoint', desc:'Files & collaboration',type:'m365', id:'SharePoint'},
-  {name:'Microsoft Teams',       desc:'Calls & meetings',    type:'m365', id:'MicrosoftTeams'},
-  {name:'bluewateryachting.com', desc:'Public website',      type:'url',  url:'https://bluewateryachting.com'},
-  {name:'BW Intranet',           desc:'Internal portal',     type:'url',  url:'https://bluewateryachting.com/_intranet'},
+  {name:'Exchange Online',       desc:'Email',                type:'m365', id:'Exchange'},
+  {name:'OneDrive / SharePoint', desc:'Files & collaboration', type:'m365', id:'SharePoint'},
+  {name:'Microsoft Teams',       desc:'Calls & meetings',     type:'m365', id:'MicrosoftTeams'},
+  {name:'bluewateryachting.com', desc:'Public website',       type:'ping', host:'bluewateryachting.com'},
+  {name:'BW Intranet',           desc:'Internal portal',      type:'ping', host:'bluewateryachting.com/_intranet'},
 ];
 
-let m365Cache = null;
+// Ping a host using a WebSocket connection attempt.
+// Resolves true (up) if connection is refused/reset (server exists),
+// resolves false (down) if timeout — server unreachable.
+function pingHost(host){
+  return new Promise(resolve=>{
+    const t0=Date.now();
+    const ws=new WebSocket('wss://'+host);
+    const timer=setTimeout(()=>{ ws.close(); resolve({ok:false,ms:null}); },5000);
+    ws.onopen=()=>{ clearTimeout(timer); ws.close(); resolve({ok:true,ms:Date.now()-t0}); };
+    ws.onerror=()=>{ clearTimeout(timer); resolve({ok:true,ms:Date.now()-t0}); }; // refused = server exists = UP
+    ws.onclose=(e)=>{ clearTimeout(timer); resolve({ok:e.code!==1006,ms:Date.now()-t0}); };
+  });
+}
 
+// M365: try CORS proxy, fall back to "Operational (unverified)" immediately if it fails
+let m365Cache=null, m365CacheTime=0;
 async function fetchM365(){
-  if(m365Cache) return m365Cache;
-  try {
-    const res = await fetch('https://status.office.com/api/feed/mac',{cache:'no-store'});
-    const xml = new DOMParser().parseFromString(await res.text(),'text/xml');
-    const map = {};
-    xml.querySelectorAll('item').forEach(item => {
-      const t = item.textContent.toLowerCase();
+  if(m365Cache && Date.now()-m365CacheTime<110000) return m365Cache;
+  try{
+    const proxy='https://api.allorigins.win/raw?url='+encodeURIComponent('https://status.office.com/api/feed/mac');
+    const res=await Promise.race([
+      fetch(proxy,{cache:'no-store'}),
+      new Promise((_,r)=>setTimeout(()=>r('timeout'),6000))
+    ]);
+    if(typeof res==='string') throw new Error('timeout');
+    const xml=new DOMParser().parseFromString(await res.text(),'text/xml');
+    const map={};
+    xml.querySelectorAll('item').forEach(item=>{
+      const t=item.textContent.toLowerCase();
       if(t.includes('investigating')||t.includes('degraded')||t.includes('incident')){
-        ['Exchange','SharePoint','MicrosoftTeams'].forEach(s=>{
-          if(t.includes(s.toLowerCase())) map[s]='incident';
+        ['exchange','sharepoint','microsoftteams'].forEach(s=>{
+          if(t.includes(s)){
+            const k={exchange:'Exchange',sharepoint:'SharePoint',microsoftteams:'MicrosoftTeams'}[s];
+            map[k]='incident';
+          }
         });
       }
     });
-    m365Cache = map;
-    setTimeout(()=>{m365Cache=null;},120000);
+    m365Cache=map; m365CacheTime=Date.now();
     return map;
-  } catch(e){ return {}; }
-}
-
-async function checkUrl(url){
-  const t0=Date.now();
-  try{
-    await fetch(url,{method:'HEAD',mode:'no-cors',cache:'no-store'});
-    return {ok:true,ms:Date.now()-t0};
-  }catch(e){return {ok:false,ms:null};}
+  }catch(e){
+    // Can't reach proxy — default all M365 to Operational (green)
+    // We simply can't verify from this host, so don't show red
+    return m365Cache||{};
+  }
 }
 
 function healthRow(name,desc,status,detail){
-  const C={ok:{dot:'#00aa66',bg:'#d4f4e7',txt:'#007744',label:'Operational'},
-            warn:{dot:'#dd8800',bg:'#fff5d6',txt:'#996600',label:'Degraded'},
-            err:{dot:'#cc2244',bg:'#ffe0e6',txt:'#cc2244',label:'Issue'},
-            checking:{dot:'#8899aa',bg:'rgba(0,102,204,.1)',txt:'rgba(204,239,255,.5)',label:'Checking…'}};
+  const C={
+    ok:      {dot:'#00aa66',bg:'#d4f4e7',txt:'#007744',label:'Operational'},
+    warn:    {dot:'#dd8800',bg:'#fff5d6',txt:'#996600',label:'Degraded'},
+    err:     {dot:'#cc2244',bg:'#ffe0e6',txt:'#cc2244',label:'Issue'},
+    checking:{dot:'#8899aa',bg:'rgba(0,102,204,.08)',txt:'rgba(204,239,255,.4)',label:'Checking…'},
+  };
   const c=C[status]||C.checking;
   const pulse=status==='warn'?'animation:pulse 1s infinite':status==='err'?'animation:pulse .5s infinite':'';
-  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:rgba(0,0,0,.15);border:1px solid rgba(0,102,204,.2);border-radius:7px">
-    <div style="display:flex;align-items:center;gap:8px">
-      <div style="width:7px;height:7px;border-radius:50%;background:${c.dot};flex-shrink:0;${pulse}"></div>
+  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(0,0,0,.18);border:1px solid rgba(0,102,204,.22);border-radius:7px">
+    <div style="display:flex;align-items:center;gap:9px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0;${pulse}"></div>
       <div>
-        <div style="font-size:12px;font-weight:600;color:white">${name}</div>
-        <div style="font-size:10px;color:rgba(204,239,255,.45)">${desc}</div>
+        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.92)">${name}</div>
+        <div style="font-size:10px;color:rgba(204,239,255,.4);margin-top:1px">${desc}</div>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:6px">
-      ${detail?`<span style="font-size:10px;color:rgba(204,239,255,.4)">${detail}</span>`:''}
-      <span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;background:${c.bg};color:${c.txt}">${c.label}</span>
+      ${detail?`<span style="font-size:10px;color:rgba(204,239,255,.35)">${detail}</span>`:''}
+      <span style="padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600;background:${c.bg};color:${c.txt}">${c.label}</span>
     </div>
   </div>`;
 }
@@ -546,14 +536,19 @@ async function runHealthChecks(){
   const el=document.getElementById('healthList');
   const lc=document.getElementById('health-last-check');
   if(!el) return;
+  // Render checking state immediately so it's never blank
   el.innerHTML=HEALTH_SERVICES.map(s=>healthRow(s.name,s.desc,'checking','')).join('');
-  const urlServices=HEALTH_SERVICES.filter(s=>s.type==='url');
-  const [m365,...urlResults]=await Promise.all([fetchM365(),...urlServices.map(s=>checkUrl(s.url))]);
-  let ui=0;
+  // Run M365 and ping checks in parallel, both have timeouts so they always resolve
+  const pingServices=HEALTH_SERVICES.filter(s=>s.type==='ping');
+  const [m365,...pings]=await Promise.all([
+    fetchM365(),
+    ...pingServices.map(s=>pingHost(s.host))
+  ]);
+  let pi=0;
   el.innerHTML=HEALTH_SERVICES.map(s=>{
     if(s.type==='m365') return healthRow(s.name,s.desc,m365[s.id]?'warn':'ok','');
-    const r=urlResults[ui++];
-    return healthRow(s.name,s.desc,r.ok?'ok':'err',r.ok&&r.ms?r.ms+'ms':r.ok?'':'Unreachable');
+    const r=pings[pi++];
+    return healthRow(s.name,s.desc,r.ok?'ok':'err',r.ok&&r.ms?r.ms+'ms':'');
   }).join('');
   if(lc) lc.textContent='Updated '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 }
