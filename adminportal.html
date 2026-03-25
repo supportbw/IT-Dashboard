@@ -2275,40 +2275,19 @@
 
   <!-- ═══════════ IT INVENTORY ═══════════ -->
   <div id="page-inventory" class="page">
+    <!-- Page header -->
     <div class="page-header">
       <div>
         <div class="page-title">IT Services &amp; Inventory</div>
-        <div class="page-subtitle">Complete register of all IT devices — ordered, received, and manually added</div>
+        <div class="page-subtitle">Complete register of all IT devices and software licences</div>
       </div>
       <div style="display:flex;gap:10px;align-items:center">
-        
-        <!-- View toggle tabs -->
-        <div style="display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border)">
-          <button id="tab-devices" onclick="switchInventoryTab('devices')" style="padding:8px 22px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;background:none;border:none;border-bottom:3px solid var(--blue-primary);color:var(--blue-primary);cursor:pointer;margin-bottom:-2px">🖥️ Devices</button>
-          <button id="tab-services" onclick="switchInventoryTab('services')" style="padding:8px 22px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;background:none;border:none;border-bottom:3px solid transparent;color:var(--text-secondary);cursor:pointer;margin-bottom:-2px">🔧 Services &amp; Licences</button>
-        </div>
-        <!-- Devices panel -->
-        <div id="panel-devices">
-        <input type="text" id="inv-search" placeholder="🔍  Search by name, serial, model…" oninput="searchInventory()" style="padding:9px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;width:240px;font-family:'DM Sans',sans-serif;outline:none">
-        <select id="inv-filter-dept" onchange="searchInventory()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
-          <option value="all">All Departments</option>
-          <option>Management</option><option>Charter</option><option>Sales</option>
-          <option>Operations</option><option>Finance</option><option>Marketing</option><option>IT</option>
-        </select>
-        <select id="inv-filter-type" onchange="searchInventory()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
-          <option value="all">All Types</option>
-          <option>Laptop</option><option>Phone</option><option>Tablet</option>
-          <option>Monitor</option><option>Accessory</option><option>Other</option>
-        </select>
-        <select id="inv-filter-status" onchange="searchInventory()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
-          <option value="all">All Statuses</option>
-          <option>In Use</option><option>Available</option><option>In Repair</option><option>Retired</option>
-        </select>
         <button class="btn btn-primary" onclick="openAddDeviceModal()">+ Add Device</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportInventory()">📥 Export CSV</button>
       </div>
     </div>
 
-    <!-- Stats -->
+    <!-- Stats row -->
     <div class="stats-grid" style="margin-bottom:20px">
       <div class="stat-card blue">
         <div class="stat-label">Total Devices</div>
@@ -2336,219 +2315,250 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="table-wrap">
-        <table id="inv-table">
-          <thead>
-            <tr>
-              <th>Photo</th>
-              <th>Asset #</th>
-              <th>Type</th>
-              <th>Model / Description</th>
-              <th>Serial Number</th>
-              <th>Assigned To</th>
-              <th>Department</th>
-              <th>Approved By</th>
-              <th>Date Received</th>
-              <th>Status</th>
-              <th>Comments</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="inv-tbody">
-            <tr data-dept="Sales" data-type="Phone" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0042</code></td>
-              <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
-              <td><b>Apple iPhone 16 Pro</b><br><span style="font-size:11px;color:var(--text-muted)">256GB Space Black</span></td>
-              <td><code style="font-size:11px">F2LXQ9ZT0001</code></td>
-              <td><b>James Whitfield</b></td>
-              <td>Sales</td>
-              <td>Marc Dupont</td>
-              <td>03 Mar 2026</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">IMEI: 356891048523714</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Operations" data-type="Monitor" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0041</code></td>
-              <td><span class="inv-type-tag type-monitor">🖥️ Monitor</span></td>
-              <td><b>Samsung 27" 4K Monitor</b><br><span style="font-size:11px;color:var(--text-muted)">Model U27G2G</span></td>
-              <td><code style="font-size:11px">MON-2026-0891</code></td>
-              <td><b>Carla Rossi</b></td>
-              <td>Operations</td>
-              <td>David Chen</td>
-              <td>01 Mar 2026</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Finance" data-type="Accessory" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0039</code></td>
-              <td><span class="inv-type-tag type-acc">🔌 Accessory</span></td>
-              <td><b>Belkin USB-C Docking Station</b><br><span style="font-size:11px;color:var(--text-muted)">INC003 14-in-1</span></td>
-              <td><code style="font-size:11px">DOCK-2024-0088</code></td>
-              <td><b>Liu Wei</b></td>
-              <td>Finance</td>
-              <td>Marc Dupont</td>
-              <td>04 Mar 2026</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="IT" data-type="Laptop" data-status="Available">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0038</code></td>
-              <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-              <td><b>Apple MacBook Air 13"</b><br><span style="font-size:11px;color:var(--text-muted)">M3, 16GB RAM, 512GB SSD, Silver</span></td>
-              <td><code style="font-size:11px">C02XG3KPHV2R</code></td>
-              <td><span style="color:var(--text-muted);font-style:italic">Unassigned</span></td>
-              <td>IT</td>
-              <td>IT Admin</td>
-              <td>15 Feb 2026</td>
-              <td><span class="badge badge-available">Available</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">Spare unit — ready to deploy</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Charter" data-type="Laptop" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0037</code></td>
-              <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-              <td><b>Apple MacBook Pro 14"</b><br><span style="font-size:11px;color:var(--text-muted)">M3 Pro, 18GB RAM, 512GB SSD, Space Grey</span></td>
-              <td><code style="font-size:11px">C02XG2JNHV2R</code></td>
-              <td><b>James Whitfield</b></td>
-              <td>Charter</td>
-              <td>Marc Dupont</td>
-              <td>10 Jan 2026</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Management" data-type="Laptop" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0036</code></td>
-              <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-              <td><b>Apple MacBook Pro 16"</b><br><span style="font-size:11px;color:var(--text-muted)">M3 Max, 36GB RAM, 1TB SSD</span></td>
-              <td><code style="font-size:11px">C02XG9MNHV2R</code></td>
-              <td><b>Marc Dupont</b></td>
-              <td>Management</td>
-              <td>Board</td>
-              <td>05 Jan 2026</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">Director device</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Marketing" data-type="Phone" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0035</code></td>
-              <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
-              <td><b>Apple iPhone 15</b><br><span style="font-size:11px;color:var(--text-muted)">128GB Midnight</span></td>
-              <td><code style="font-size:11px">F2LXQ7AB0099</code></td>
-              <td><b>Tom Bergström</b></td>
-              <td>Marketing</td>
-              <td>Sarah Mills</td>
-              <td>12 Nov 2025</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">To retrieve — offboarding</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Operations" data-type="Laptop" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0034</code></td>
-              <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-              <td><b>Dell XPS 15</b><br><span style="font-size:11px;color:var(--text-muted)">Intel i7, 32GB RAM, 1TB SSD</span></td>
-              <td><code style="font-size:11px">DXPS-2025-0441</code></td>
-              <td><b>Carla Rossi</b></td>
-              <td>Operations</td>
-              <td>David Chen</td>
-              <td>22 Oct 2025</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="IT" data-type="Laptop" data-status="In Repair">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0031</code></td>
-              <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-              <td><b>Apple MacBook Pro 13"</b><br><span style="font-size:11px;color:var(--text-muted)">M1, 8GB RAM, 256GB SSD</span></td>
-              <td><code style="font-size:11px">C02XA1NFHV2R</code></td>
-              <td><span style="color:var(--text-muted);font-style:italic">In Repair</span></td>
-              <td>IT</td>
-              <td>IT Admin</td>
-              <td>01 Jun 2024</td>
-              <td><span class="badge badge-repair">🔧 In Repair</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">Battery replacement — Apple Service</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Sales" data-type="Monitor" data-status="Available">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0030</code></td>
-              <td><span class="inv-type-tag type-monitor">🖥️ Monitor</span></td>
-              <td><b>LG 34" Ultrawide</b><br><span style="font-size:11px;color:var(--text-muted)">34WN80C-B, 2560x1080</span></td>
-              <td><code style="font-size:11px">LG34-2024-0112</code></td>
-              <td><span style="color:var(--text-muted);font-style:italic">Unassigned</span></td>
-              <td>Sales</td>
-              <td>Marc Dupont</td>
-              <td>10 Sep 2024</td>
-              <td><span class="badge badge-available">Available</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">Pending Alex Turner order</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Finance" data-type="Phone" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0028</code></td>
-              <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
-              <td><b>Samsung Galaxy S24</b><br><span style="font-size:11px;color:var(--text-muted)">256GB Marble Grey</span></td>
-              <td><code style="font-size:11px">R3CR904BXXX</code></td>
-              <td><b>Liu Wei</b></td>
-              <td>Finance</td>
-              <td>Marc Dupont</td>
-              <td>14 Aug 2024</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-            <tr data-dept="Management" data-type="Tablet" data-status="In Use">
-              <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-              <td><code style="font-size:11px;color:var(--text-muted)">#BW-0025</code></td>
-              <td><span class="inv-type-tag type-tablet">📋 Tablet</span></td>
-              <td><b>Apple iPad Pro 12.9"</b><br><span style="font-size:11px;color:var(--text-muted)">M2, 256GB Wi-Fi + Cellular, Space Grey</span></td>
-              <td><code style="font-size:11px">DLXP8K120022</code></td>
-              <td><b>Marc Dupont</b></td>
-              <td>Management</td>
-              <td>Board</td>
-              <td>03 Mar 2024</td>
-              <td><span class="badge badge-inuse">In Use</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">With Apple Pencil + Magic Keyboard</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- Tab switcher -->
+    <div style="display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:20px">
+      <button id="tab-devices" onclick="switchInventoryTab('devices')" style="padding:10px 28px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;background:none;border:none;border-bottom:3px solid var(--blue-primary);color:var(--blue-primary);cursor:pointer;margin-bottom:-2px;transition:all .2s">🖥️ Devices</button>
+      <button id="tab-services" onclick="switchInventoryTab('services')" style="padding:10px 28px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;background:none;border:none;border-bottom:3px solid transparent;color:var(--text-secondary);cursor:pointer;margin-bottom:-2px;transition:all .2s">🔧 Services &amp; Licences</button>
+    </div>
+
+    <!-- ══ DEVICES PANEL ══ -->
+    <div id="panel-devices">
+      <!-- Filters -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+        <input type="text" id="inv-search" placeholder="🔍  Search by name, serial, model…" oninput="searchInventory()" style="padding:9px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;width:240px;font-family:'DM Sans',sans-serif;outline:none">
+        <select id="inv-filter-dept" onchange="searchInventory()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
+          <option value="all">All Departments</option>
+          <option>Management</option><option>Charter</option><option>Sales</option>
+          <option>Operations</option><option>Finance</option><option>Marketing</option><option>IT</option>
+        </select>
+        <select id="inv-filter-type" onchange="searchInventory()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
+          <option value="all">All Types</option>
+          <option>Laptop</option><option>Phone</option><option>Tablet</option>
+          <option>Monitor</option><option>Accessory</option><option>Other</option>
+        </select>
+        <select id="inv-filter-status" onchange="searchInventory()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
+          <option value="all">All Statuses</option>
+          <option>In Use</option><option>Available</option><option>In Repair</option><option>Retired</option>
+        </select>
       </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
-        <span style="font-size:12px;color:var(--text-muted)" id="inv-count-label">Showing 12 of 12 devices</span>
-        
-        </div><!-- /panel-devices -->
-        <!-- Services panel -->
-        <div id="panel-services" style="display:none">
-          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
-            <input type="text" id="svc-search" placeholder="🔍 Search services…" oninput="filterServices()" style="padding:9px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;width:220px;font-family:'DM Sans',sans-serif;outline:none">
-            <select id="svc-filter-cat" onchange="filterServices()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
-              <option value="">All Categories</option>
-              <option>Ai Services</option><option>App</option><option>Internet</option>
-              <option>Mailing</option><option>Marketing</option><option>Mobile</option>
-              <option>Office Programs</option><option>Payment Platform</option>
-              <option>Phone</option><option>Project Management</option>
-              <option>Support</option><option>Website</option>
-            </select>
-            <select id="svc-filter-sub" onchange="filterServices()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
-              <option value="">All Billing</option>
-              <option>Monthly</option><option>Yearly</option>
-            </select>
-          </div>
-          <div style="overflow-x:auto">
+
+      <!-- Devices table -->
+      <div class="card">
+        <div class="table-wrap">
+          <table id="inv-table">
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Asset #</th>
+                <th>Type</th>
+                <th>Model / Description</th>
+                <th>Serial Number</th>
+                <th>Assigned To</th>
+                <th>Department</th>
+                <th>Approved By</th>
+                <th>Date Received</th>
+                <th>Status</th>
+                <th>Comments</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inv-tbody">
+              <tr data-dept="Sales" data-type="Phone" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0042</code></td>
+                <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
+                <td><b>Apple iPhone 16 Pro</b><br><span style="font-size:11px;color:var(--text-muted)">256GB Space Black</span></td>
+                <td><code style="font-size:11px">F2LXQ9ZT0001</code></td>
+                <td><b>James Whitfield</b></td>
+                <td>Sales</td>
+                <td>Marc Dupont</td>
+                <td>03 Mar 2026</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">IMEI: 356891048523714</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Operations" data-type="Monitor" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0041</code></td>
+                <td><span class="inv-type-tag type-monitor">🖥️ Monitor</span></td>
+                <td><b>Samsung 27" 4K Monitor</b><br><span style="font-size:11px;color:var(--text-muted)">Model U27G2G</span></td>
+                <td><code style="font-size:11px">MON-2026-0891</code></td>
+                <td><b>Carla Rossi</b></td>
+                <td>Operations</td>
+                <td>David Chen</td>
+                <td>01 Mar 2026</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Finance" data-type="Accessory" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0039</code></td>
+                <td><span class="inv-type-tag type-acc">🔌 Accessory</span></td>
+                <td><b>Belkin USB-C Docking Station</b><br><span style="font-size:11px;color:var(--text-muted)">INC003 14-in-1</span></td>
+                <td><code style="font-size:11px">DOCK-2024-0088</code></td>
+                <td><b>Liu Wei</b></td>
+                <td>Finance</td>
+                <td>Marc Dupont</td>
+                <td>15 Feb 2026</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="IT" data-type="Laptop" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0038</code></td>
+                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
+                <td><b>Apple MacBook Air 13"</b><br><span style="font-size:11px;color:var(--text-muted)">M3, 16GB RAM, 512GB SSD, Silver</span></td>
+                <td><code style="font-size:11px">C02XG3KFHV2R</code></td>
+                <td><b>IT Support</b></td>
+                <td>IT</td>
+                <td>IT Admin</td>
+                <td>20 Feb 2026</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">IT team device</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Management" data-type="Laptop" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0037</code></td>
+                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
+                <td><b>Apple MacBook Pro 14"</b><br><span style="font-size:11px;color:var(--text-muted)">M3 Pro, 18GB RAM, 512GB SSD, Space Grey</span></td>
+                <td><code style="font-size:11px">C02XG2JMHV2R</code></td>
+                <td><b>Sophie Laurent</b></td>
+                <td>Management</td>
+                <td>Board</td>
+                <td>18 Feb 2026</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Management" data-type="Laptop" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0036</code></td>
+                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
+                <td><b>Apple MacBook Pro 16"</b><br><span style="font-size:11px;color:var(--text-muted)">M3 Max, 36GB RAM, 1TB SSD</span></td>
+                <td><code style="font-size:11px">C02XG9MNHV2R</code></td>
+                <td><b>Marc Dupont</b></td>
+                <td>Management</td>
+                <td>Board</td>
+                <td>05 Jan 2026</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">Director device</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Marketing" data-type="Phone" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0035</code></td>
+                <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
+                <td><b>Apple iPhone 15</b><br><span style="font-size:11px;color:var(--text-muted)">128GB Midnight</span></td>
+                <td><code style="font-size:11px">F2LXQ7AB0099</code></td>
+                <td><b>Tom Bergström</b></td>
+                <td>Marketing</td>
+                <td>Sarah Mills</td>
+                <td>12 Nov 2025</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">To retrieve — offboarding</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Operations" data-type="Laptop" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0034</code></td>
+                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
+                <td><b>Dell XPS 15</b><br><span style="font-size:11px;color:var(--text-muted)">Intel i7, 32GB RAM, 1TB SSD</span></td>
+                <td><code style="font-size:11px">DXPS-2025-0441</code></td>
+                <td><b>Carla Rossi</b></td>
+                <td>Operations</td>
+                <td>David Chen</td>
+                <td>22 Oct 2025</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="IT" data-type="Laptop" data-status="In Repair">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0031</code></td>
+                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
+                <td><b>Apple MacBook Pro 13"</b><br><span style="font-size:11px;color:var(--text-muted)">M1, 8GB RAM, 256GB SSD</span></td>
+                <td><code style="font-size:11px">C02XA1NFHV2R</code></td>
+                <td><span style="color:var(--text-muted);font-style:italic">In Repair</span></td>
+                <td>IT</td>
+                <td>IT Admin</td>
+                <td>01 Jun 2024</td>
+                <td><span class="badge badge-repair">🔧 In Repair</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">Battery replacement — Apple Service</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Sales" data-type="Monitor" data-status="Available">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0030</code></td>
+                <td><span class="inv-type-tag type-monitor">🖥️ Monitor</span></td>
+                <td><b>LG 34" Ultrawide</b><br><span style="font-size:11px;color:var(--text-muted)">34WN80C-B, 2560x1080</span></td>
+                <td><code style="font-size:11px">LG34-2024-0112</code></td>
+                <td><span style="color:var(--text-muted);font-style:italic">Unassigned</span></td>
+                <td>Sales</td>
+                <td>Marc Dupont</td>
+                <td>10 Sep 2024</td>
+                <td><span class="badge badge-available">Available</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">Pending Alex Turner order</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Finance" data-type="Phone" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0028</code></td>
+                <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
+                <td><b>Samsung Galaxy S24</b><br><span style="font-size:11px;color:var(--text-muted)">256GB Marble Grey</span></td>
+                <td><code style="font-size:11px">R3CR904BXXX</code></td>
+                <td><b>Liu Wei</b></td>
+                <td>Finance</td>
+                <td>Marc Dupont</td>
+                <td>14 Aug 2024</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+              <tr data-dept="Management" data-type="Tablet" data-status="In Use">
+                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
+                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0025</code></td>
+                <td><span class="inv-type-tag type-tablet">📋 Tablet</span></td>
+                <td><b>Apple iPad Pro 12.9"</b><br><span style="font-size:11px;color:var(--text-muted)">M2, 256GB Wi-Fi + Cellular, Space Grey</span></td>
+                <td><code style="font-size:11px">DLXP8K120022</code></td>
+                <td><b>Marc Dupont</b></td>
+                <td>Management</td>
+                <td>Board</td>
+                <td>03 Mar 2024</td>
+                <td><span class="badge badge-inuse">In Use</span></td>
+                <td><span style="font-size:12px;color:var(--text-muted)">With Apple Pencil + Magic Keyboard</span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+          <span style="font-size:12px;color:var(--text-muted)" id="inv-count-label">Showing 12 of 12 devices</span>
+        </div>
+      </div>
+    </div><!-- /panel-devices -->
+
+    <!-- ══ SERVICES PANEL ══ -->
+    <div id="panel-services" style="display:none">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+        <input type="text" id="svc-search" placeholder="🔍 Search services…" oninput="filterServices()" style="padding:9px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;width:220px;font-family:'DM Sans',sans-serif;outline:none">
+        <select id="svc-filter-cat" onchange="filterServices()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
+          <option value="">All Categories</option>
+          <option>Ai Services</option><option>App</option><option>Internet</option>
+          <option>Mailing</option><option>Marketing</option><option>Mobile</option>
+          <option>Office Programs</option><option>Payment Platform</option>
+          <option>Phone</option><option>Project Management</option>
+          <option>Support</option><option>Website</option>
+        </select>
+        <select id="svc-filter-sub" onchange="filterServices()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
+          <option value="">All Billing</option>
+          <option>Monthly</option><option>Yearly</option>
+        </select>
+      </div>
+      <div class="card">
+        <div style="overflow-x:auto">
           <table style="width:100%;border-collapse:collapse;font-size:13px" id="svc-table">
             <thead>
               <tr style="background:var(--surface-2);text-align:left">
@@ -2819,12 +2829,11 @@
             </tr>
             </tbody>
           </table>
-          </div>
-          <div style="margin-top:12px;font-size:12px;color:var(--text-secondary)" id="svc-count">32 services &amp; licences</div>
-        </div><!-- /panel-services -->
-        <button class="btn btn-secondary btn-sm" onclick="exportInventory()">📥 Export CSV</button>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary)" id="svc-count">32 services &amp; licences</div>
       </div>
-    </div>
+    </div><!-- /panel-services -->
+
   </div>
 
 
