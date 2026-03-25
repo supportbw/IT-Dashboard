@@ -377,25 +377,25 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
     <div class="stats-grid">
       <div class="stat-card c1">
         <div class="stat-label">Open Tickets</div>
-        <div class="stat-value" id="sOpen" style="color:var(--blue-primary)">12</div>
+        <div class="stat-value" id="sOpen" style="color:var(--blue-primary)">0</div>
         <div class="stat-sub">3 high priority</div>
         <div class="stat-ico">🎟️</div>
       </div>
       <div class="stat-card c2">
         <div class="stat-label">In Progress</div>
-        <div class="stat-value" id="sProgress" style="color:var(--warning)">7</div>
+        <div class="stat-value" id="sProgress" style="color:var(--warning)">0</div>
         <div class="stat-sub">avg 2.1 days</div>
         <div class="stat-ico">⚙️</div>
       </div>
       <div class="stat-card c3">
         <div class="stat-label">Resolved Today</div>
-        <div class="stat-value" id="sDone" style="color:var(--success)">5</div>
+        <div class="stat-value" id="sDone" style="color:var(--success)">0</div>
         <div class="stat-sub">↑ 2 from yesterday</div>
         <div class="stat-ico">✅</div>
       </div>
       <div class="stat-card c4">
         <div class="stat-label">IT Requests Pending</div>
-        <div class="stat-value" id="sPending" style="color:var(--blue-bright)">4</div>
+        <div class="stat-value" id="sPending" style="color:var(--blue-bright)">0</div>
         <div class="stat-sub">awaiting approval</div>
         <div class="stat-ico">📦</div>
       </div>
@@ -533,16 +533,7 @@ const ANNOUNCEMENTS = [
   {dot:'yellow',title:'Windows 11 Upgrade Rollout Starting',    body:'IT will be scheduling Windows 11 upgrades for all staff PCs over the next 3 weeks. Expect a ~30min session per device.',date:'Mar 7, 2026'},
 ];
 
-let TASKS = [
-  {id:1,title:'Replace screen on Ops dept laptop #14',        status:'progress',prio:'high',who:'Alex T.',    date:'Today',  vis:true},
-  {id:2,title:'Setup new hire workstation – Sarah M.',         status:'open',    prio:'med', who:'Unassigned', date:'Mar 10', vis:true},
-  {id:3,title:'Network slow in Building B – investigate',      status:'progress',prio:'high',who:'Jordan K.', date:'Today',  vis:true},
-  {id:4,title:'Install Adobe CC on Design team PCs',           status:'waiting', prio:'low', who:'Alex T.',   date:'Mar 11', vis:false},
-  {id:5,title:'Password reset policy update rollout',          status:'open',    prio:'med', who:'Jordan K.', date:'Mar 12', vis:false},
-  {id:6,title:'Printer 3F toner replacement + calibration',    status:'done',    prio:'low', who:'Mia R.',    date:'Today',  vis:true},
-  {id:7,title:'VPN access for remote contractor – J.Brown',    status:'open',    prio:'med', who:'Unassigned',date:'Mar 10', vis:false},
-  {id:8,title:'Backup failure alert on server BW-NAS-02',      status:'progress',prio:'high',who:'Jordan K.', date:'Today',  vis:true},
-];
+let TASKS = [];
 
 const STATUS_LABEL = {open:'Open',progress:'In Progress',done:'Done',waiting:'Waiting'};
 

@@ -908,25 +908,25 @@
     <div class="stats-grid">
       <div class="stat-card blue">
         <div class="stat-label">Pending Orders</div>
-        <div class="stat-value">3</div>
+        <div class="stat-value">0</div>
         <div class="stat-sub">Awaiting approval</div>
         <div class="stat-icon">📋</div>
       </div>
       <div class="stat-card success">
         <div class="stat-label">Devices Ready</div>
-        <div class="stat-value">2</div>
+        <div class="stat-value">0</div>
         <div class="stat-sub">For collection</div>
         <div class="stat-icon">📦</div>
       </div>
       <div class="stat-card navy">
         <div class="stat-label">Active Users</div>
-        <div class="stat-value">47</div>
+        <div class="stat-value">0</div>
         <div class="stat-sub">Across all departments</div>
         <div class="stat-icon">👥</div>
       </div>
       <div class="stat-card warning">
         <div class="stat-label">Service Alerts</div>
-        <div class="stat-value">1</div>
+        <div class="stat-value">0</div>
         <div class="stat-sub">Requires attention</div>
         <div class="stat-icon">⚠️</div>
       </div>
@@ -1215,66 +1215,7 @@
             </tr>
           </thead>
           <tbody id="order-tbody">
-            <tr data-status="approved" data-dept="Sales">
-              <td><code style="font-size:11px;color:var(--text-muted)">#0042</code></td>
-              <td><b>James Whitfield</b></td>
-              <td>Sales</td>
-              <td>iPhone 16 Pro</td>
-              <td>Marc Dupont</td>
-              <td>03 Mar 2026</td>
-              <td><span class="badge badge-approved">✓ Approved</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="openReceive('James Whitfield','iPhone 16 Pro')">Mark Received</button></td>
-            </tr>
-            <tr data-status="pending" data-dept="Charter">
-              <td><code style="font-size:11px;color:var(--text-muted)">#0043</code></td>
-              <td><b>Sophie Laurent</b></td>
-              <td>Charter</td>
-              <td>MacBook Pro 14"</td>
-              <td>—</td>
-              <td>04 Mar 2026</td>
-              <td><span class="badge badge-pending">⏳ Pending</span></td>
-              <td style="display:flex;gap:6px"><button class="btn btn-sm btn-success" onclick="changeStatus(this,'approved')">Approve</button><button class="btn btn-sm btn-danger" onclick="changeStatus(this,'refused')">Refuse</button></td>
-            </tr>
-            <tr data-status="received" data-dept="Operations">
-              <td><code style="font-size:11px;color:var(--text-muted)">#0041</code></td>
-              <td><b>Carla Rossi</b></td>
-              <td>Operations</td>
-              <td>27" Monitor</td>
-              <td>David Chen</td>
-              <td>01 Mar 2026</td>
-              <td><span class="badge badge-received">📦 Received</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">SN: MON-2026-0891</span></td>
-            </tr>
-            <tr data-status="refused" data-dept="Marketing">
-              <td><code style="font-size:11px;color:var(--text-muted)">#0040</code></td>
-              <td><b>Tom Bergström</b></td>
-              <td>Marketing</td>
-              <td>iPad Pro</td>
-              <td>Sarah Mills</td>
-              <td>28 Feb 2026</td>
-              <td><span class="badge badge-refused">✗ Refused</span></td>
-              <td><span style="font-size:12px;color:var(--text-muted)">Budget exceeded</span></td>
-            </tr>
-            <tr data-status="ordered" data-dept="Finance">
-              <td><code style="font-size:11px;color:var(--text-muted)">#0039</code></td>
-              <td><b>Liu Wei</b></td>
-              <td>Finance</td>
-              <td>Docking Station</td>
-              <td>Marc Dupont</td>
-              <td>27 Feb 2026</td>
-              <td><span class="badge badge-ordered">🛒 Ordered</span></td>
-              <td><button class="btn btn-sm btn-secondary" onclick="openReceive('Liu Wei','Docking Station')">Mark Received</button></td>
-            </tr>
-            <tr data-status="pending" data-dept="IT">
-              <td><code style="font-size:11px;color:var(--text-muted)">#0044</code></td>
-              <td><b>Alex Turner</b></td>
-              <td>IT</td>
-              <td>34" Ultrawide Monitor</td>
-              <td>—</td>
-              <td>05 Mar 2026</td>
-              <td><span class="badge badge-pending">⏳ Pending</span></td>
-              <td style="display:flex;gap:6px"><button class="btn btn-sm btn-success" onclick="changeStatus(this,'approved')">Approve</button><button class="btn btn-sm btn-danger" onclick="changeStatus(this,'refused')">Refuse</button></td>
-            </tr>
+            <tr id="order-empty-row"><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted);font-style:italic">No requests yet — submit one via New Request</td></tr>
           </tbody>
         </table>
       </div>
@@ -1913,25 +1854,25 @@
     <div class="task-stats">
       <div class="stat-card blue">
         <div class="stat-label">To Do</div>
-        <div class="stat-value" id="count-todo">4</div>
+        <div class="stat-value" id="count-todo">0</div>
         <div class="stat-sub">Awaiting action</div>
         <div class="stat-icon">📋</div>
       </div>
       <div class="stat-card warning">
         <div class="stat-label">In Progress</div>
-        <div class="stat-value" id="count-inprog">3</div>
+        <div class="stat-value" id="count-inprog">0</div>
         <div class="stat-sub">Being worked on</div>
         <div class="stat-icon">⚙️</div>
       </div>
       <div class="stat-card navy">
         <div class="stat-label">In Review</div>
-        <div class="stat-value" id="count-review">2</div>
+        <div class="stat-value" id="count-review">0</div>
         <div class="stat-sub">Pending sign-off</div>
         <div class="stat-icon">🔍</div>
       </div>
       <div class="stat-card success">
         <div class="stat-label">Completed</div>
-        <div class="stat-value" id="count-done">5</div>
+        <div class="stat-value" id="count-done">0</div>
         <div class="stat-sub">This week</div>
         <div class="stat-icon">✅</div>
       </div>
@@ -1947,98 +1888,7 @@
           <span class="task-col-count" id="badge-todo">4</span>
         </div>
         <div class="task-cards" id="cards-todo">
-          <div class="task-card" data-agent="Alex Turner" data-priority="High">
-            <div class="task-card-top">
-              <span class="task-title">Set up O365 account for Emma Nakamura (start 10 Mar)</span>
-              <span class="task-priority pri-high">High</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">Onboarding</span>
-              <span class="task-tag">O365</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">AT</div> Alex Turner</div>
-              <span class="task-due overdue">Due: 09 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="viewTask(this)">View</button>
-              <button class="task-btn move" onclick="moveTask(this,'inprog')">▶ Start</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Marie Leblanc" data-priority="High">
-            <div class="task-card-top">
-              <span class="task-title">Investigate bluewateryachting.com degraded performance</span>
-              <span class="task-priority pri-high">High</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">Website</span>
-              <span class="task-tag">Infrastructure</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">ML</div> Marie Leblanc</div>
-              <span class="task-due overdue">Due: 06 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="viewTask(this)">View</button>
-              <button class="task-btn move" onclick="moveTask(this,'inprog')">▶ Start</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Ravi Singh" data-priority="Medium">
-            <div class="task-card-top">
-              <span class="task-title">Configure email signature template for new joiners</span>
-              <span class="task-priority pri-medium">Medium</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">O365</span>
-              <span class="task-tag">Template</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">RS</div> Ravi Singh</div>
-              <span class="task-due">Due: 12 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="viewTask(this)">View</button>
-              <button class="task-btn move" onclick="moveTask(this,'inprog')">▶ Start</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Alex Turner" data-priority="Low">
-            <div class="task-card-top">
-              <span class="task-title">Audit software licences — identify unused seats</span>
-              <span class="task-priority pri-low">Low</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">Licences</span>
-              <span class="task-tag">Audit</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">AT</div> Alex Turner</div>
-              <span class="task-due">Due: 20 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="viewTask(this)">View</button>
-              <button class="task-btn move" onclick="moveTask(this,'inprog')">▶ Start</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
+          <p style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px 0;font-style:italic">No tasks</p>
         </div>
         <div style="padding:0 12px 12px"><button class="add-task-btn" onclick="openNewTaskModal()">+ Add Task</button></div>
       </div>
@@ -2050,75 +1900,7 @@
           <span class="task-col-count" id="badge-inprog">3</span>
         </div>
         <div class="task-cards" id="cards-inprog">
-          <div class="task-card" data-agent="Marie Leblanc" data-priority="High">
-            <div class="task-card-top">
-              <span class="task-title">Deploy MacBook Pro for Tom Bergström — Finance</span>
-              <span class="task-priority pri-high">High</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">Hardware</span>
-              <span class="task-tag">Finance</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">ML</div> Marie Leblanc</div>
-              <span class="task-due">Due: 07 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'todo')">◀ Back</button>
-              <button class="task-btn move" onclick="moveTask(this,'review')">▶ Review</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Ravi Singh" data-priority="Medium">
-            <div class="task-card-top">
-              <span class="task-title">Reset MFA for Carla Rossi — Operations</span>
-              <span class="task-priority pri-medium">Medium</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">Security</span>
-              <span class="task-tag">O365</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">RS</div> Ravi Singh</div>
-              <span class="task-due">Due: 06 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'todo')">◀ Back</button>
-              <button class="task-btn move" onclick="moveTask(this,'review')">▶ Review</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Alex Turner" data-priority="Medium">
-            <div class="task-card-top">
-              <span class="task-title">Install Adobe Creative Cloud on 3 Marketing workstations</span>
-              <span class="task-priority pri-medium">Medium</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">Software</span>
-              <span class="task-tag">Marketing</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">AT</div> Alex Turner</div>
-              <span class="task-due">Due: 10 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'todo')">◀ Back</button>
-              <button class="task-btn move" onclick="moveTask(this,'review')">▶ Review</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
+          <p style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px 0;font-style:italic">No tasks</p>
         </div>
         <div style="padding:0 12px 12px"><button class="add-task-btn" onclick="openNewTaskModal()">+ Add Task</button></div>
       </div>
@@ -2130,52 +1912,7 @@
           <span class="task-col-count" id="badge-review">2</span>
         </div>
         <div class="task-cards" id="cards-review">
-          <div class="task-card" data-agent="Marie Leblanc" data-priority="High">
-            <div class="task-card-top">
-              <span class="task-title">Tom Bergström offboarding — account disablement &amp; data archive</span>
-              <span class="task-priority pri-high">High</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">Offboarding</span>
-              <span class="task-tag">O365</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">ML</div> Marie Leblanc</div>
-              <span class="task-due">Due: 07 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'inprog')">◀ Back</button>
-              <button class="task-btn move" onclick="moveTask(this,'done')">✓ Done</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Ravi Singh" data-priority="Low">
-            <div class="task-card-top">
-              <span class="task-title">Update IT asset register with Q1 new devices</span>
-              <span class="task-priority pri-low">Low</span>
-            </div>
-            <div class="task-meta">
-              <span class="task-tag">Asset Register</span>
-              <span class="task-tag">Admin</span>
-            </div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">RS</div> Ravi Singh</div>
-              <span class="task-due">Due: 14 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'inprog')">◀ Back</button>
-              <button class="task-btn move" onclick="moveTask(this,'done')">✓ Done</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
+          <p style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px 0;font-style:italic">No tasks</p>
         </div>
         <div style="padding:0 12px 12px"><button class="add-task-btn" onclick="openNewTaskModal()">+ Add Task</button></div>
       </div>
@@ -2187,101 +1924,7 @@
           <span class="task-col-count" id="badge-done">5</span>
         </div>
         <div class="task-cards" id="cards-done">
-          <div class="task-card" data-agent="Alex Turner" data-priority="High" style="opacity:.7">
-            <div class="task-card-top">
-              <span class="task-title" style="text-decoration:line-through;color:var(--text-muted)">Configure VPN access for 5 remote crew</span>
-              <span class="task-priority pri-high">High</span>
-            </div>
-            <div class="task-meta"><span class="task-tag">VPN</span><span class="task-tag">Security</span></div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">AT</div> Alex Turner</div>
-              <span class="task-due" style="color:var(--success)">✓ 04 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Marie Leblanc" data-priority="Medium" style="opacity:.7">
-            <div class="task-card-top">
-              <span class="task-title" style="text-decoration:line-through;color:var(--text-muted)">Printer setup — Monaco HQ 3rd floor</span>
-              <span class="task-priority pri-medium">Medium</span>
-            </div>
-            <div class="task-meta"><span class="task-tag">Hardware</span><span class="task-tag">Monaco</span></div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">ML</div> Marie Leblanc</div>
-              <span class="task-due" style="color:var(--success)">✓ 03 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Ravi Singh" data-priority="Low" style="opacity:.7">
-            <div class="task-card-top">
-              <span class="task-title" style="text-decoration:line-through;color:var(--text-muted)">Renew SSL certificate — intranet.bluewateryachting.com</span>
-              <span class="task-priority pri-low">Low</span>
-            </div>
-            <div class="task-meta"><span class="task-tag">SSL</span><span class="task-tag">Intranet</span></div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">RS</div> Ravi Singh</div>
-              <span class="task-due" style="color:var(--success)">✓ 01 Mar</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Alex Turner" data-priority="Medium" style="opacity:.7">
-            <div class="task-card-top">
-              <span class="task-title" style="text-decoration:line-through;color:var(--text-muted)">Windows security updates — 12 devices</span>
-              <span class="task-priority pri-medium">Medium</span>
-            </div>
-            <div class="task-meta"><span class="task-tag">Security</span><span class="task-tag">Updates</span></div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">AT</div> Alex Turner</div>
-              <span class="task-due" style="color:var(--success)">✓ 28 Feb</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
-          <div class="task-card" data-agent="Marie Leblanc" data-priority="High" style="opacity:.7">
-            <div class="task-card-top">
-              <span class="task-title" style="text-decoration:line-through;color:var(--text-muted)">Exchange mail flow issue — Charter department</span>
-              <span class="task-priority pri-high">High</span>
-            </div>
-            <div class="task-meta"><span class="task-tag">Exchange</span><span class="task-tag">Charter</span></div>
-            <div class="task-footer">
-              <div class="task-assignee"><div class="task-avatar">ML</div> Marie Leblanc</div>
-              <span class="task-due" style="color:var(--success)">✓ 27 Feb</span>
-            </div>
-            <div class="task-actions">
-              <button class="task-btn" onclick="moveTask(this,'review')">↩ Reopen</button>
-            </div>
-            <div class="portal-toggle" onclick="togglePortalVis(this)" title="Toggle visibility on staff portal">
-              <div class="ptoggle-track"><div class="ptoggle-knob"></div></div>
-              <span class="ptoggle-icon">👁️</span>
-              <span class="ptoggle-label">Hidden from portal</span>
-            </div>
-          </div>
+          <p style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px 0;font-style:italic">No tasks</p>
         </div>
       </div>
 
@@ -2306,25 +1949,25 @@
     <div class="stats-grid" style="margin-bottom:20px">
       <div class="stat-card blue">
         <div class="stat-label">Total Devices</div>
-        <div class="stat-value" id="inv-total">12</div>
+        <div class="stat-value" id="inv-total">0</div>
         <div class="stat-sub">In registry</div>
         <div class="stat-icon">🗄️</div>
       </div>
       <div class="stat-card success">
         <div class="stat-label">In Use</div>
-        <div class="stat-value" id="inv-inuse">9</div>
+        <div class="stat-value" id="inv-inuse">0</div>
         <div class="stat-sub">Assigned to staff</div>
         <div class="stat-icon">✅</div>
       </div>
       <div class="stat-card navy">
         <div class="stat-label">Available</div>
-        <div class="stat-value" id="inv-avail">2</div>
+        <div class="stat-value" id="inv-avail">0</div>
         <div class="stat-sub">Ready to assign</div>
         <div class="stat-icon">📦</div>
       </div>
       <div class="stat-card warning">
         <div class="stat-label">In Repair / Retired</div>
-        <div class="stat-value" id="inv-other">1</div>
+        <div class="stat-value" id="inv-other">0</div>
         <div class="stat-sub">Out of service</div>
         <div class="stat-icon">🔧</div>
       </div>
@@ -2378,175 +2021,8 @@
               </tr>
             </thead>
             <tbody id="inv-tbody">
-              <tr data-dept="Sales" data-type="Phone" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0042</code></td>
-                <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
-                <td><b>Apple iPhone 16 Pro</b><br><span style="font-size:11px;color:var(--text-muted)">256GB Space Black</span></td>
-                <td><code style="font-size:11px">F2LXQ9ZT0001</code></td>
-                <td><b>James Whitfield</b></td>
-                <td>Sales</td>
-                <td>Marc Dupont</td>
-                <td>03 Mar 2026</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">IMEI: 356891048523714</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Operations" data-type="Monitor" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0041</code></td>
-                <td><span class="inv-type-tag type-monitor">🖥️ Monitor</span></td>
-                <td><b>Samsung 27" 4K Monitor</b><br><span style="font-size:11px;color:var(--text-muted)">Model U27G2G</span></td>
-                <td><code style="font-size:11px">MON-2026-0891</code></td>
-                <td><b>Carla Rossi</b></td>
-                <td>Operations</td>
-                <td>David Chen</td>
-                <td>01 Mar 2026</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Finance" data-type="Accessory" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0039</code></td>
-                <td><span class="inv-type-tag type-acc">🔌 Accessory</span></td>
-                <td><b>Belkin USB-C Docking Station</b><br><span style="font-size:11px;color:var(--text-muted)">INC003 14-in-1</span></td>
-                <td><code style="font-size:11px">DOCK-2024-0088</code></td>
-                <td><b>Liu Wei</b></td>
-                <td>Finance</td>
-                <td>Marc Dupont</td>
-                <td>15 Feb 2026</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="IT" data-type="Laptop" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0038</code></td>
-                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-                <td><b>Apple MacBook Air 13"</b><br><span style="font-size:11px;color:var(--text-muted)">M3, 16GB RAM, 512GB SSD, Silver</span></td>
-                <td><code style="font-size:11px">C02XG3KFHV2R</code></td>
-                <td><b>IT Support</b></td>
-                <td>IT</td>
-                <td>IT Admin</td>
-                <td>20 Feb 2026</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">IT team device</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Management" data-type="Laptop" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0037</code></td>
-                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-                <td><b>Apple MacBook Pro 14"</b><br><span style="font-size:11px;color:var(--text-muted)">M3 Pro, 18GB RAM, 512GB SSD, Space Grey</span></td>
-                <td><code style="font-size:11px">C02XG2JMHV2R</code></td>
-                <td><b>Sophie Laurent</b></td>
-                <td>Management</td>
-                <td>Board</td>
-                <td>18 Feb 2026</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Management" data-type="Laptop" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0036</code></td>
-                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-                <td><b>Apple MacBook Pro 16"</b><br><span style="font-size:11px;color:var(--text-muted)">M3 Max, 36GB RAM, 1TB SSD</span></td>
-                <td><code style="font-size:11px">C02XG9MNHV2R</code></td>
-                <td><b>Marc Dupont</b></td>
-                <td>Management</td>
-                <td>Board</td>
-                <td>05 Jan 2026</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">Director device</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Marketing" data-type="Phone" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0035</code></td>
-                <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
-                <td><b>Apple iPhone 15</b><br><span style="font-size:11px;color:var(--text-muted)">128GB Midnight</span></td>
-                <td><code style="font-size:11px">F2LXQ7AB0099</code></td>
-                <td><b>Tom Bergström</b></td>
-                <td>Marketing</td>
-                <td>Sarah Mills</td>
-                <td>12 Nov 2025</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">To retrieve — offboarding</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Operations" data-type="Laptop" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0034</code></td>
-                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-                <td><b>Dell XPS 15</b><br><span style="font-size:11px;color:var(--text-muted)">Intel i7, 32GB RAM, 1TB SSD</span></td>
-                <td><code style="font-size:11px">DXPS-2025-0441</code></td>
-                <td><b>Carla Rossi</b></td>
-                <td>Operations</td>
-                <td>David Chen</td>
-                <td>22 Oct 2025</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="IT" data-type="Laptop" data-status="In Repair">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0031</code></td>
-                <td><span class="inv-type-tag type-laptop">💻 Laptop</span></td>
-                <td><b>Apple MacBook Pro 13"</b><br><span style="font-size:11px;color:var(--text-muted)">M1, 8GB RAM, 256GB SSD</span></td>
-                <td><code style="font-size:11px">C02XA1NFHV2R</code></td>
-                <td><span style="color:var(--text-muted);font-style:italic">In Repair</span></td>
-                <td>IT</td>
-                <td>IT Admin</td>
-                <td>01 Jun 2024</td>
-                <td><span class="badge badge-repair">🔧 In Repair</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">Battery replacement — Apple Service</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Sales" data-type="Monitor" data-status="Available">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0030</code></td>
-                <td><span class="inv-type-tag type-monitor">🖥️ Monitor</span></td>
-                <td><b>LG 34" Ultrawide</b><br><span style="font-size:11px;color:var(--text-muted)">34WN80C-B, 2560x1080</span></td>
-                <td><code style="font-size:11px">LG34-2024-0112</code></td>
-                <td><span style="color:var(--text-muted);font-style:italic">Unassigned</span></td>
-                <td>Sales</td>
-                <td>Marc Dupont</td>
-                <td>10 Sep 2024</td>
-                <td><span class="badge badge-available">Available</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">Pending Alex Turner order</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Finance" data-type="Phone" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0028</code></td>
-                <td><span class="inv-type-tag type-phone">📱 Phone</span></td>
-                <td><b>Samsung Galaxy S24</b><br><span style="font-size:11px;color:var(--text-muted)">256GB Marble Grey</span></td>
-                <td><code style="font-size:11px">R3CR904BXXX</code></td>
-                <td><b>Liu Wei</b></td>
-                <td>Finance</td>
-                <td>Marc Dupont</td>
-                <td>14 Aug 2024</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">—</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-              <tr data-dept="Management" data-type="Tablet" data-status="In Use">
-                <td class="dev-photo-cell"><div class="dev-no-photo" title="No photo" onclick="triggerPhotoUpload(this)">🖼️</div></td>
-                <td><code style="font-size:11px;color:var(--text-muted)">#BW-0025</code></td>
-                <td><span class="inv-type-tag type-tablet">📋 Tablet</span></td>
-                <td><b>Apple iPad Pro 12.9"</b><br><span style="font-size:11px;color:var(--text-muted)">M2, 256GB Wi-Fi + Cellular, Space Grey</span></td>
-                <td><code style="font-size:11px">DLXP8K120022</code></td>
-                <td><b>Marc Dupont</b></td>
-                <td>Management</td>
-                <td>Board</td>
-                <td>03 Mar 2024</td>
-                <td><span class="badge badge-inuse">In Use</span></td>
-                <td><span style="font-size:12px;color:var(--text-muted)">With Apple Pencil + Magic Keyboard</span></td>
-                <td><button class="btn btn-sm btn-secondary" onclick="editDevice(this)">Edit</button></td>
-              </tr>
-            </tbody>
+            <tr id="inv-empty-row"><td colspan="12" style="text-align:center;padding:40px;color:var(--text-muted);font-style:italic">No devices yet — use + Add Item to register your first device</td></tr>
+          </tbody>
           </table>
         </div>
         <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
@@ -2586,262 +2062,7 @@
               </tr>
             </thead>
             <tbody id="svc-tbody">
-<tr>
-              <td><span style="background:#7c3aed22;color:#7c3aed;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Ai Services</span></td>
-              <td style="font-weight:600">ChatGPT</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Crew / Digital</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">AG</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#7c3aed22;color:#7c3aed;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Ai Services</span></td>
-              <td style="font-weight:600">Claude AI</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Management</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">AG</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">App</span></td>
-              <td style="font-weight:600">GOOLE DEV</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
-              <td style="font-size:12px">AG</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">Have APP on Goole store</span></td>
-            </tr>
-<tr>
-              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">App</span></td>
-              <td style="font-weight:600">APPLE DEV</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
-              <td style="font-size:12px">AG</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">Have APP on APPLE store</span></td>
-            </tr>
-<tr>
-              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">App</span></td>
-              <td style="font-weight:600">Onesignal</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">AG</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
-              <td style="font-weight:600">Orange France / Monaco</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Admin / Training / Crew / Monaco</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
-              <td style="font-weight:600">latypik Biot</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Crew Biot 1 /Biot 3</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
-              <td style="font-weight:600">Monaco Telecom</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Monaco</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
-              <td style="font-weight:600">Infomaniac</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">Next server</span></td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
-              <td style="font-weight:600">Swiss</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Swiss office</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#05966922;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Mailing</span></td>
-              <td style="font-weight:600">Maichimp</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#05966922;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Mailing</span></td>
-              <td style="font-weight:600">Office 365 Signature</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#05966922;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Mailing</span></td>
-              <td style="font-weight:600">Tasjeel Dubai</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Dubai Office</td>
-              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
-              <td style="font-weight:600">Zapier</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
-              <td style="font-weight:600">Soundstripe</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
-              <td style="font-weight:600">Bitley</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
-              <td style="font-weight:600">Publicate</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
-              <td style="font-weight:600">Beefree</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
-              <td style="font-weight:600">Canva</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
-              <td style="font-weight:600">Capcut</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#dc262622;color:#dc2626;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Mobile</span></td>
-              <td style="font-weight:600">Orange France / Monaco</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Office Programs</span></td>
-              <td style="font-weight:600">Adobe</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Office Programs</span></td>
-              <td style="font-weight:600">Office 365</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#05966922;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Payment Platform</span></td>
-              <td style="font-weight:600">Stipes Services</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#7c3aed22;color:#7c3aed;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Phone</span></td>
-              <td style="font-weight:600">Ring Over</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Management</td>
-              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Project Management</span></td>
-              <td style="font-weight:600">Asana</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Project Management</span></td>
-              <td style="font-weight:600">Salesforce</td>
-              <td style="font-size:12px;color:var(--text-secondary)">Charter</td>
-              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#dc262622;color:#dc2626;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Support</span></td>
-              <td style="font-weight:600">Teamviewer</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Website</span></td>
-              <td style="font-weight:600">AWS Servers</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Website</span></td>
-              <td style="font-weight:600">Gandhi</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Website</span></td>
-              <td style="font-weight:600">Tido</td>
-              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
-<tr>
-              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Website</span></td>
-              <td style="font-weight:600">Godaddy Admin Services</td>
-              <td style="font-size:12px;color:var(--text-secondary)">—</td>
-              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
-              <td style="font-size:12px">—</td>
-              <td>—</td>
-            </tr>
+              <tr id="svc-empty-row"><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);font-style:italic">No services yet — use + Add Item to register a service or licence</td></tr>
             </tbody>
           </table>
         </div>
@@ -3033,7 +2254,56 @@ function updatePreview() {
 }
 
 function submitRequest() {
-  showToast('📨 Request submitted! Email sent to IT team.');
+  const by       = document.getElementById('req-by').value.trim();
+  const dept     = document.getElementById('req-dept').value;
+  const location = (function(){
+    const s = document.getElementById('req-location').value;
+    if (s === 'Other') return document.getElementById('req-location-other').value.trim() || 'Other';
+    return s || '—';
+  })();
+  const approved = document.getElementById('req-approved').value.trim();
+  const device   = document.getElementById('req-device').value;
+  const date     = document.getElementById('req-date').value || new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  const priority = document.getElementById('req-priority').value;
+  const notes    = document.getElementById('req-notes').value.trim();
+
+  if (!by || !dept || !device) {
+    showToast('⚠️ Please fill in Requested By, Department and Device.'); return;
+  }
+
+  orderCounter++;
+  const orderNum = '#' + String(orderCounter).padStart(4,'0');
+
+  // Remove empty-state row if present
+  const emptyRow = document.getElementById('order-empty-row');
+  if (emptyRow) emptyRow.remove();
+
+  const row = document.createElement('tr');
+  row.dataset.status = 'pending';
+  row.dataset.dept   = dept;
+  row.innerHTML =
+    '<td><code style="font-size:11px;color:var(--text-muted)">' + orderNum + '</code></td>' +
+    '<td><b>' + by + '</b>' + (location !== '—' ? '<br><span style="font-size:11px;color:var(--text-muted)">📍 ' + location + '</span>' : '') + '</td>' +
+    '<td>' + dept + '</td>' +
+    '<td>' + device + (priority === 'Urgent' ? ' <span style="color:var(--danger);font-size:11px;font-weight:700">⚡ Urgent</span>' : '') + '</td>' +
+    '<td>' + (approved||'—') + '</td>' +
+    '<td>' + date + '</td>' +
+    '<td><span class="badge badge-pending">⏳ Pending</span></td>' +
+    '<td style="display:flex;gap:6px"><button class="btn btn-sm btn-success" onclick="changeStatus(this,'approved')">Approve</button><button class="btn btn-sm btn-danger" onclick="changeStatus(this,'refused')">Refuse</button></td>';
+
+  document.getElementById('order-tbody').prepend(row);
+
+  // Clear form
+  ['req-by','req-approved','req-role','req-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('req-dept').value = '';
+  document.getElementById('req-device').value = '';
+  document.getElementById('req-priority').value = 'Standard';
+  document.getElementById('req-location').value = '';
+  document.getElementById('req-location-other').value = '';
+  document.getElementById('req-location-other').style.display = 'none';
+  updatePreview();
+
+  showToast('📨 Request #' + orderNum + ' submitted and added to Order Log!');
 }
 
 // Order log filter
@@ -3250,7 +2520,8 @@ function filterTasks() {
 }
 
 // ── INVENTORY ──
-let invAssetCounter = 43;
+let invAssetCounter = 0;
+let orderCounter = 0;
 
 const SERVICES = [
   {cat:'Ai Services',name:'ChatGPT',dept:'Crew / Digital',sub:'Monthly',card:'AG',comments:''},
@@ -3328,6 +2599,8 @@ function addServiceToInventory() {
     <td>${subBadge}</td>
     <td style="font-size:12px">${card}</td>
     <td>${notesCell}</td>`;
+  const svcEmpty = document.getElementById('svc-empty-row');
+  if (svcEmpty) svcEmpty.remove();
   document.getElementById('svc-tbody').appendChild(row);
   // clear form
   ['svc-name','svc-dept-input','svc-requested-by','svc-amount','svc-card','svc-renewal','svc-comments'].forEach(id => document.getElementById(id).value = '');
@@ -3395,19 +2668,29 @@ function addDeviceToInventory() {
   const type     = document.getElementById('ad-type').value;
   const assigned = document.getElementById('ad-assigned').value.trim();
   const dept     = document.getElementById('ad-dept').value;
+  const locSel   = document.getElementById('ad-location').value;
+  const locOther = document.getElementById('ad-location-other').value.trim();
+  const location = locSel === 'Other' ? (locOther || 'Other') : (locSel || '');
+  const by       = document.getElementById('ad-by').value.trim();
+  const role     = document.getElementById('ad-role').value.trim();
   const approved = document.getElementById('ad-approved').value.trim();
   const date     = document.getElementById('ad-date').value;
   const status   = document.getElementById('ad-status').value;
   const comments = document.getElementById('ad-comments').value.trim();
+  const priority = document.getElementById('ad-priority').value;
 
-  if(!model || !serial) { alert('Please enter at least a Model and Serial Number.'); return; }
+  if(!model) { showToast('⚠️ Please enter at least a Model / Description.'); return; }
+
+  // Remove empty-state row if present
+  const emptyRow = document.getElementById('inv-empty-row');
+  if (emptyRow) emptyRow.remove();
 
   const typeIcons   = {Laptop:'💻',Phone:'📱',Tablet:'📋',Monitor:'🖥️',Accessory:'🔌',Other:'📦'};
   const typeClasses = {Laptop:'type-laptop',Phone:'type-phone',Tablet:'type-tablet',Monitor:'type-monitor',Accessory:'type-acc',Other:'type-acc'};
   const statusBadges= {'In Use':'badge-inuse','Available':'badge-available','In Repair':'badge-repair','Retired':'badge-retired'};
 
   invAssetCounter++;
-  const assetNum = '#BW-00' + invAssetCounter;
+  const assetNum = '#BW-' + String(invAssetCounter).padStart(4,'0');
   const row = document.createElement('tr');
   row.dataset.dept = dept;
   row.dataset.type = type;
@@ -3421,7 +2704,7 @@ function addDeviceToInventory() {
     photoCell +
     '<td><code style="font-size:11px;color:var(--text-muted)">' + assetNum + '</code></td>' +
     '<td><span class="inv-type-tag ' + typeClasses[type] + '">' + typeIcons[type] + ' ' + type + '</span></td>' +
-    '<td><b>' + model + '</b><br><span style="font-size:11px;color:var(--text-muted)">Manually added</span></td>' +
+    '<td><b>' + model + '</b><br><span style="font-size:11px;color:var(--text-muted)">' + (location ? '📍 ' + location : 'Manually added') + '</span></td>' +
     '<td><code style="font-size:11px">' + serial + '</code></td>' +
     '<td>' + (assigned || '<span style="color:var(--text-muted);font-style:italic">Unassigned</span>') + '</td>' +
     '<td>' + dept + '</td>' +
@@ -3434,7 +2717,13 @@ function addDeviceToInventory() {
   document.getElementById('inv-tbody').prepend(row);
   updateInventoryStats();
   document.getElementById('add-device-modal').classList.remove('open');
-  ['ad-model','ad-serial','ad-assigned','ad-approved','ad-comments'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['ad-model','ad-serial','ad-assigned','ad-approved','ad-comments','ad-by','ad-role','ad-location-other'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('ad-dept').value='';
+  document.getElementById('ad-type').value='Laptop';
+  document.getElementById('ad-status').value='In Use';
+  document.getElementById('ad-priority').value='Standard';
+  document.getElementById('ad-location').value='';
+  document.getElementById('ad-location-other').style.display='none';
   var pp=document.getElementById('ad-photo-preview'); pp.style.display='none'; pp.src='';
   var pr=document.getElementById('ad-photo-remove'); pr.style.display='none';
   var uz=document.getElementById('ad-photo-upload-zone'); uz.style.display='flex';
