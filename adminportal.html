@@ -870,7 +870,7 @@
     <span class="nav-icon">📦</span> Receive Goods
   </div>
   <div class="nav-item" onclick="showPage('inventory')">
-    <span class="nav-icon">🗄️</span> IT Inventory
+    <span class="nav-icon">🗄️</span> IT Services & Inventory
   </div>
 
   <div class="nav-section-label">People</div>
@@ -2277,10 +2277,18 @@
   <div id="page-inventory" class="page">
     <div class="page-header">
       <div>
-        <div class="page-title">IT Inventory</div>
+        <div class="page-title">IT Services &amp; Inventory</div>
         <div class="page-subtitle">Complete register of all IT devices — ordered, received, and manually added</div>
       </div>
       <div style="display:flex;gap:10px;align-items:center">
+        
+        <!-- View toggle tabs -->
+        <div style="display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border)">
+          <button id="tab-devices" onclick="switchInventoryTab('devices')" style="padding:8px 22px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;background:none;border:none;border-bottom:3px solid var(--blue-primary);color:var(--blue-primary);cursor:pointer;margin-bottom:-2px">🖥️ Devices</button>
+          <button id="tab-services" onclick="switchInventoryTab('services')" style="padding:8px 22px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;background:none;border:none;border-bottom:3px solid transparent;color:var(--text-secondary);cursor:pointer;margin-bottom:-2px">🔧 Services &amp; Licences</button>
+        </div>
+        <!-- Devices panel -->
+        <div id="panel-devices">
         <input type="text" id="inv-search" placeholder="🔍  Search by name, serial, model…" oninput="searchInventory()" style="padding:9px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;width:240px;font-family:'DM Sans',sans-serif;outline:none">
         <select id="inv-filter-dept" onchange="searchInventory()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
           <option value="all">All Departments</option>
@@ -2521,6 +2529,299 @@
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
         <span style="font-size:12px;color:var(--text-muted)" id="inv-count-label">Showing 12 of 12 devices</span>
+        
+        </div><!-- /panel-devices -->
+        <!-- Services panel -->
+        <div id="panel-services" style="display:none">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+            <input type="text" id="svc-search" placeholder="🔍 Search services…" oninput="filterServices()" style="padding:9px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;width:220px;font-family:'DM Sans',sans-serif;outline:none">
+            <select id="svc-filter-cat" onchange="filterServices()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
+              <option value="">All Categories</option>
+              <option>Ai Services</option><option>App</option><option>Internet</option>
+              <option>Mailing</option><option>Marketing</option><option>Mobile</option>
+              <option>Office Programs</option><option>Payment Platform</option>
+              <option>Phone</option><option>Project Management</option>
+              <option>Support</option><option>Website</option>
+            </select>
+            <select id="svc-filter-sub" onchange="filterServices()" style="padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:white;color:var(--text-primary)">
+              <option value="">All Billing</option>
+              <option>Monthly</option><option>Yearly</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:13px" id="svc-table">
+            <thead>
+              <tr style="background:var(--surface-2);text-align:left">
+                <th style="padding:10px 14px;font-weight:700;color:var(--text-secondary);font-size:12px;text-transform:uppercase;letter-spacing:.5px">Category</th>
+                <th style="padding:10px 14px;font-weight:700;color:var(--text-secondary);font-size:12px;text-transform:uppercase;letter-spacing:.5px">Service / Licence</th>
+                <th style="padding:10px 14px;font-weight:700;color:var(--text-secondary);font-size:12px;text-transform:uppercase;letter-spacing:.5px">Department</th>
+                <th style="padding:10px 14px;font-weight:700;color:var(--text-secondary);font-size:12px;text-transform:uppercase;letter-spacing:.5px">Billing</th>
+                <th style="padding:10px 14px;font-weight:700;color:var(--text-secondary);font-size:12px;text-transform:uppercase;letter-spacing:.5px">Card Holder</th>
+                <th style="padding:10px 14px;font-weight:700;color:var(--text-secondary);font-size:12px;text-transform:uppercase;letter-spacing:.5px">Notes</th>
+              </tr>
+            </thead>
+            <tbody id="svc-tbody">
+<tr>
+              <td><span style="background:#7c3aed22;color:#7c3aed;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Ai Services</span></td>
+              <td style="font-weight:600">ChatGPT</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Crew / Digital</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">AG</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#7c3aed22;color:#7c3aed;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Ai Services</span></td>
+              <td style="font-weight:600">Claude AI</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Management</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">AG</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">App</span></td>
+              <td style="font-weight:600">GOOLE DEV</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
+              <td style="font-size:12px">AG</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">Have APP on Goole store</span></td>
+            </tr>
+<tr>
+              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">App</span></td>
+              <td style="font-weight:600">APPLE DEV</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
+              <td style="font-size:12px">AG</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">Have APP on APPLE store</span></td>
+            </tr>
+<tr>
+              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">App</span></td>
+              <td style="font-weight:600">Onesignal</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">AG</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
+              <td style="font-weight:600">Orange France / Monaco</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Admin / Training / Crew / Monaco</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
+              <td style="font-weight:600">latypik Biot</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Crew Biot 1 /Biot 3</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
+              <td style="font-weight:600">Monaco Telecom</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Monaco</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
+              <td style="font-weight:600">Infomaniac</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">Next server</span></td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Internet</span></td>
+              <td style="font-weight:600">Swiss</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Swiss office</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#05966922;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Mailing</span></td>
+              <td style="font-weight:600">Maichimp</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#05966922;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Mailing</span></td>
+              <td style="font-weight:600">Office 365 Signature</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#05966922;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Mailing</span></td>
+              <td style="font-weight:600">Tasjeel Dubai</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Dubai Office</td>
+              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
+              <td style="font-weight:600">Zapier</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
+              <td style="font-weight:600">Soundstripe</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
+              <td style="font-weight:600">Bitley</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
+              <td style="font-weight:600">Publicate</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
+              <td style="font-weight:600">Beefree</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
+              <td style="font-weight:600">Canva</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#d9770622;color:#d97706;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Marketing</span></td>
+              <td style="font-weight:600">Capcut</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#dc262622;color:#dc2626;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Mobile</span></td>
+              <td style="font-weight:600">Orange France / Monaco</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Office Programs</span></td>
+              <td style="font-weight:600">Adobe</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Office Programs</span></td>
+              <td style="font-weight:600">Office 365</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#05966922;color:#059669;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Payment Platform</span></td>
+              <td style="font-weight:600">Stipes Services</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="color:var(--text-secondary);font-size:12px">—</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#7c3aed22;color:#7c3aed;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Phone</span></td>
+              <td style="font-weight:600">Ring Over</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Management</td>
+              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Project Management</span></td>
+              <td style="font-weight:600">Asana</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0891b222;color:#0891b2;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Project Management</span></td>
+              <td style="font-weight:600">Salesforce</td>
+              <td style="font-size:12px;color:var(--text-secondary)">Charter</td>
+              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#dc262622;color:#dc2626;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Support</span></td>
+              <td style="font-weight:600">Teamviewer</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Website</span></td>
+              <td style="font-weight:600">AWS Servers</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Website</span></td>
+              <td style="font-weight:600">Gandhi</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Website</span></td>
+              <td style="font-weight:600">Tido</td>
+              <td style="font-size:12px;color:var(--text-secondary)">ALL</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+<tr>
+              <td><span style="background:#0066cc22;color:#0066cc;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">Website</span></td>
+              <td style="font-weight:600">Godaddy Admin Services</td>
+              <td style="font-size:12px;color:var(--text-secondary)">—</td>
+              <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span></td>
+              <td style="font-size:12px">—</td>
+              <td>—</td>
+            </tr>
+            </tbody>
+          </table>
+          </div>
+          <div style="margin-top:12px;font-size:12px;color:var(--text-secondary)" id="svc-count">32 services &amp; licences</div>
+        </div><!-- /panel-services -->
         <button class="btn btn-secondary btn-sm" onclick="exportInventory()">📥 Export CSV</button>
       </div>
     </div>
@@ -2915,6 +3216,67 @@ function filterTasks() {
 
 // ── INVENTORY ──
 let invAssetCounter = 43;
+
+const SERVICES = [
+  {cat:'Ai Services',name:'ChatGPT',dept:'Crew / Digital',sub:'Monthly',card:'AG',comments:''},
+  {cat:'Ai Services',name:'Claude AI',dept:'Management',sub:'Monthly',card:'AG',comments:''},
+  {cat:'App',name:'GOOLE DEV',dept:'—',sub:'Yearly',card:'AG',comments:'Have APP on Goole store'},
+  {cat:'App',name:'APPLE DEV',dept:'—',sub:'Yearly',card:'AG',comments:'Have APP on APPLE store'},
+  {cat:'App',name:'Onesignal',dept:'—',sub:'Monthly',card:'AG',comments:''},
+  {cat:'Internet',name:'Orange France / Monaco',dept:'Admin / Training / Crew / Monaco',sub:'Monthly',card:'—',comments:''},
+  {cat:'Internet',name:'latypik Biot',dept:'Crew Biot 1 /Biot 3',sub:'Monthly',card:'—',comments:''},
+  {cat:'Internet',name:'Monaco Telecom',dept:'Monaco',sub:'Monthly',card:'—',comments:''},
+  {cat:'Internet',name:'Infomaniac',dept:'ALL',sub:'Monthly',card:'—',comments:'Next server'},
+  {cat:'Internet',name:'Swiss',dept:'Swiss office',sub:'Monthly',card:'—',comments:''},
+  {cat:'Mailing',name:'Maichimp',dept:'ALL',sub:'Monthly',card:'—',comments:''},
+  {cat:'Mailing',name:'Office 365 Signature',dept:'ALL',sub:'Monthly',card:'—',comments:''},
+  {cat:'Mailing',name:'Tasjeel Dubai',dept:'Dubai Office',sub:'Yearly',card:'—',comments:''},
+  {cat:'Marketing',name:'Zapier',dept:'—',sub:'—',card:'—',comments:''},
+  {cat:'Marketing',name:'Soundstripe',dept:'—',sub:'—',card:'—',comments:''},
+  {cat:'Marketing',name:'Bitley',dept:'—',sub:'—',card:'—',comments:''},
+  {cat:'Marketing',name:'Publicate',dept:'—',sub:'—',card:'—',comments:''},
+  {cat:'Marketing',name:'Beefree',dept:'—',sub:'—',card:'—',comments:''},
+  {cat:'Marketing',name:'Canva',dept:'—',sub:'—',card:'—',comments:''},
+  {cat:'Marketing',name:'Capcut',dept:'—',sub:'—',card:'—',comments:''},
+  {cat:'Mobile',name:'Orange France / Monaco',dept:'—',sub:'Monthly',card:'—',comments:''},
+  {cat:'Office Programs',name:'Adobe',dept:'ALL',sub:'Yearly',card:'—',comments:''},
+  {cat:'Office Programs',name:'Office 365',dept:'ALL',sub:'Monthly',card:'—',comments:''},
+  {cat:'Payment Platform',name:'Stipes Services',dept:'—',sub:'—',card:'—',comments:''},
+  {cat:'Phone',name:'Ring Over',dept:'Management',sub:'Yearly',card:'—',comments:''},
+  {cat:'Project Management',name:'Asana',dept:'ALL',sub:'Monthly',card:'—',comments:''},
+  {cat:'Project Management',name:'Salesforce',dept:'Charter',sub:'Yearly',card:'—',comments:''},
+  {cat:'Support',name:'Teamviewer',dept:'ALL',sub:'Yearly',card:'—',comments:''},
+  {cat:'Website',name:'AWS Servers',dept:'ALL',sub:'Monthly',card:'—',comments:''},
+  {cat:'Website',name:'Gandhi',dept:'ALL',sub:'Yearly',card:'—',comments:''},
+  {cat:'Website',name:'Tido',dept:'ALL',sub:'Monthly',card:'—',comments:''},
+  {cat:'Website',name:'Godaddy Admin Services',dept:'—',sub:'Monthly',card:'—',comments:''},
+];
+
+
+function switchInventoryTab(tab) {
+  document.getElementById('panel-devices').style.display = tab === 'devices' ? '' : 'none';
+  document.getElementById('panel-services').style.display = tab === 'services' ? '' : 'none';
+  document.getElementById('tab-devices').style.borderBottomColor = tab === 'devices' ? 'var(--blue-primary)' : 'transparent';
+  document.getElementById('tab-devices').style.color = tab === 'devices' ? 'var(--blue-primary)' : 'var(--text-secondary)';
+  document.getElementById('tab-services').style.borderBottomColor = tab === 'services' ? 'var(--blue-primary)' : 'transparent';
+  document.getElementById('tab-services').style.color = tab === 'services' ? 'var(--blue-primary)' : 'var(--text-secondary)';
+}
+
+function filterServices() {
+  const q = (document.getElementById('svc-search').value || '').toLowerCase();
+  const cat = (document.getElementById('svc-filter-cat').value || '').toLowerCase();
+  const sub = (document.getElementById('svc-filter-sub').value || '').toLowerCase();
+  const rows = document.querySelectorAll('#svc-tbody tr');
+  let visible = 0;
+  rows.forEach(r => {
+    const txt = r.textContent.toLowerCase();
+    const show = (!q || txt.includes(q)) && (!cat || txt.includes(cat)) && (!sub || txt.includes(sub));
+    r.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  const el = document.getElementById('svc-count');
+  if (el) el.textContent = visible + ' services & licences';
+}
 
 function searchInventory() {
   const q = document.getElementById('inv-search').value.toLowerCase();
