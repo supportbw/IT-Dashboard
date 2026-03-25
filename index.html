@@ -159,35 +159,17 @@ header{background:var(--blue-deepest);padding:0 32px;height:64px;display:flex;al
 .qa-sub{font-size:10px;color:rgba(204,239,255,.5);margin-top:1px}
 
 /* Chat */
-.chat-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
-.chat-label{padding:10px 16px 8px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(204,239,255,.35);border-bottom:1px solid rgba(0,102,204,.1)}
-.chat-messages{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(0,102,204,.3) transparent}
-.chat-messages::-webkit-scrollbar{width:3px}
-.chat-messages::-webkit-scrollbar-thumb{background:rgba(0,102,204,.3);border-radius:3px}
 .msg{display:flex;flex-direction:column;gap:2px;animation:fadeUp .3s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .msg.bot{align-items:flex-start}
 .msg.user{align-items:flex-end}
 .msg-row{display:flex;align-items:flex-end;gap:7px}
 .msg.user .msg-row{flex-direction:row-reverse}
-.bot-av{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--blue-primary),var(--blue-dark));display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-size:9px;font-weight:700;color:white;flex-shrink:0;letter-spacing:0}
 .msg-bubble{max-width:92%;padding:8px 12px;border-radius:10px;font-size:12px;line-height:1.55}
 .msg.bot .msg-bubble{background:rgba(0,102,204,.12);border:1px solid rgba(0,102,204,.2);border-bottom-left-radius:3px;color:var(--blue-light)}
 .msg.user .msg-bubble{background:var(--blue-primary);color:white;border-bottom-right-radius:3px;box-shadow:0 2px 12px rgba(0,102,204,.4)}
 .msg-time{font-size:9px;color:rgba(204,239,255,.3);padding:0 4px}
-.chat-input-area{padding:10px 14px;border-top:1px solid rgba(0,102,204,.2)}
-.chat-input-wrap{display:flex;gap:7px;background:rgba(0,102,204,.1);border:1px solid rgba(0,102,204,.25);border-radius:8px;padding:7px 10px;transition:border .2s}
-.chat-input-wrap:focus-within{border-color:rgba(0,102,204,.55)}
-.chat-input-wrap input{flex:1;background:none;border:none;outline:none;color:white;font-family:'DM Sans',sans-serif;font-size:12px}
-.chat-input-wrap input::placeholder{color:rgba(204,239,255,.35)}
-.send-btn{width:28px;height:28px;border-radius:6px;background:var(--blue-primary);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:white;transition:all .2s;flex-shrink:0}
-.send-btn:hover{background:var(--blue-dark);transform:scale(1.08)}
-.send-btn svg{width:13px;height:13px}
-.typing-indicator{display:flex;align-items:center;gap:4px;padding:6px 10px}
-.typing-dot{width:5px;height:5px;border-radius:50%;background:var(--blue-light);opacity:.5;animation:typePulse 1.2s infinite}
-.typing-dot:nth-child(2){animation-delay:.2s}
-.typing-dot:nth-child(3){animation-delay:.4s}
-@keyframes typePulse{0%,60%,100%{transform:scale(.7);opacity:.3}30%{transform:scale(1);opacity:.8}}
+30%{transform:scale(1);opacity:.8}}
 
 /* ── MAIN CONTENT ── */
 main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:20px}
@@ -215,31 +197,6 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
 .card-title-left{display:flex;align-items:center;gap:8px}
 
 /* ── HEALTH ── */
-.health-list{display:flex;flex-direction:column;gap:8px}
-.health-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;transition:border .2s}
-.health-row:hover{border-color:var(--border-dark)}
-.h-left{display:flex;align-items:center;gap:10px}
-.h-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.h-icon.ok{background:#d4f4e7}
-.h-icon.warn{background:#fff5d6}
-.h-icon.err{background:#ffe0e6}
-.h-name{font-size:13px;font-weight:600;color:var(--blue-deepest)}
-.h-desc{font-size:11px;color:var(--text-muted);margin-top:1px}
-.h-right{display:flex;align-items:center;gap:10px}
-.h-bar-wrap{width:80px;height:5px;background:var(--surface-2);border-radius:3px;overflow:hidden}
-.h-bar{height:100%;border-radius:3px;transition:width 1s ease}
-.h-bar.ok{background:linear-gradient(90deg,#00aa66,#44dd99)}
-.h-bar.warn{background:linear-gradient(90deg,#dd8800,#ffcc44)}
-.h-bar.err{background:linear-gradient(90deg,#cc2244,#ff6688)}
-.h-pct{font-size:12px;font-weight:600;min-width:32px;text-align:right;color:var(--text-secondary)}
-.health-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.health-badge .dot{width:5px;height:5px;border-radius:50%}
-.health-badge.ok{background:#d4f4e7;color:#007744}
-.health-badge.ok .dot{background:#00aa66}
-.health-badge.warn{background:#fff5d6;color:#996600}
-.health-badge.warn .dot{background:#dd8800;animation:pulse 1s infinite}
-.health-badge.err{background:#ffe0e6;color:#cc2244}
-.health-badge.err .dot{background:#cc2244;animation:pulse .5s infinite}
 
 /* ── ANNOUNCEMENTS ── */
 .announce-list{display:flex;flex-direction:column;gap:8px}
@@ -280,7 +237,6 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
 .t-tag.waiting{background:#f0f4ff;color:#334488}
 .t-who{font-size:11px;color:var(--text-muted)}
 .t-date{font-size:11px;color:var(--text-muted);margin-left:auto;flex-shrink:0}
-
 
 /* ── MODALS ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,68,.55);z-index:200;align-items:center;justify-content:center}
@@ -331,7 +287,7 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
   <aside class="sidebar">
     <div class="sidebar-head">
       <h2>IT Support</h2>
-      <p>Chat or submit a request</p>
+      <p>Quick actions &amp; announcements</p>
     </div>
 
     <div class="qa-wrap">
@@ -346,28 +302,6 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
       </div>
     </div>
 
-    <div class="chat-area">
-      <div class="chat-label">Live Chat</div>
-      <div class="chat-messages" id="chatMessages">
-        <div class="msg bot">
-          <div class="bot-av">BW</div>
-          <div class="msg-row"><div class="msg-bubble">👋 Hi! I'm the Bluewater IT assistant. How can I help you today?</div></div>
-          <div class="msg-time">now</div>
-        </div>
-        <div class="msg bot">
-          <div class="bot-av">BW</div>
-          <div class="msg-row"><div class="msg-bubble">Ask about system status, submit a ticket, or request IT materials. Type below!</div></div>
-        </div>
-      </div>
-      <div class="chat-input-area">
-        <div class="chat-input-wrap">
-          <input type="text" id="chatInput" placeholder="Ask IT anything…" onkeydown="if(event.key==='Enter')sendMsg()">
-          <button class="send-btn" onclick="sendMsg()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
   </aside>
 
   <!-- MAIN -->
@@ -404,45 +338,46 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
     <!-- TWO COL -->
     <div class="two-col">
 
-      <!-- LEFT -->
+      <!-- LEFT: ANNOUNCEMENTS -->
+      <div class="card">
+        <div class="card-title"><div class="card-title-left">📢 IT Announcements</div></div>
+        <div class="announce-list" id="announceList"></div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
       <div style="display:flex;flex-direction:column;gap:20px">
 
         <!-- SYSTEM HEALTH -->
         <div class="card">
-          <div class="card-title">
-            <div class="card-title-left">🖥️ System Health</div>
+          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+            <div class="card-title-left">💻 System Health</div>
+            <span id="health-last-check" style="font-size:11px;color:var(--text-muted);font-weight:400">Checking…</span>
           </div>
-          <div class="health-list" id="healthList"></div>
+          <div id="health-list" style="display:flex;flex-direction:column;gap:8px"></div>
         </div>
 
-        <!-- ANNOUNCEMENTS -->
-        <div class="card">
-          <div class="card-title"><div class="card-title-left">📢 IT Announcements</div></div>
-          <div class="announce-list" id="announceList"></div>
-        </div>
-
-      </div>
-
-      <!-- RIGHT: TASK BOARD -->
-      <div class="card" style="padding-bottom:16px">
-        <div class="tb-head">
-          <div>
-            <h3>IT Task Board</h3>
-            <div class="tb-sub">Active IT tasks &amp; issues</div>
+        <!-- TASK BOARD -->
+        <div class="card" style="padding-bottom:16px">
+          <div class="tb-head">
+            <div>
+              <h3>IT Task Board</h3>
+              <div class="tb-sub">Active IT tasks &amp; issues</div>
+            </div>
+            <a href="adminportal.html" target="_blank" class="admin-link">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Open Admin
+            </a>
           </div>
-          <a href="adminportal.html" target="_blank" class="admin-link">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Open Admin
-          </a>
+          <div class="task-filters">
+            <button class="filter-btn active" onclick="filterTasks('all',this)">All</button>
+            <button class="filter-btn" onclick="filterTasks('open',this)">Open</button>
+            <button class="filter-btn" onclick="filterTasks('progress',this)">In Progress</button>
+            <button class="filter-btn" onclick="filterTasks('done',this)">Done</button>
+            <button class="filter-btn" onclick="filterTasks('waiting',this)">Waiting</button>
+          </div>
+          <div class="task-list" id="taskList"></div>
         </div>
-        <div class="task-filters">
-          <button class="filter-btn active" onclick="filterTasks('all',this)">All</button>
-          <button class="filter-btn" onclick="filterTasks('open',this)">Open</button>
-          <button class="filter-btn" onclick="filterTasks('progress',this)">In Progress</button>
-          <button class="filter-btn" onclick="filterTasks('done',this)">Done</button>
-          <button class="filter-btn" onclick="filterTasks('waiting',this)">Waiting</button>
-        </div>
-        <div class="task-list" id="taskList"></div>
+
       </div>
 
     </div>
@@ -516,16 +451,6 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
 
 <script>
 // ── DATA ──────────────────────────────────────────────────
-const HEALTH = [
-  {name:'Email Server',  desc:'Exchange Online',       s:'ok',  pct:99,  badge:'Operational', ico:'📧'},
-  {name:'VPN Gateway',   desc:'Remote access tunnel',  s:'ok',  pct:97,  badge:'Operational', ico:'🔒'},
-  {name:'File Server',   desc:'NAS / SharePoint sync', s:'warn',pct:78,  badge:'Degraded',    ico:'🗄️'},
-  {name:'Internet Link', desc:'Primary & failover ISP',s:'ok',  pct:100, badge:'Operational', ico:'🌐'},
-  {name:'Active Directory',desc:'User authentication', s:'ok',  pct:100, badge:'Operational', ico:'👤'},
-  {name:'Backup System', desc:'Veeam nightly jobs',    s:'warn',pct:62,  badge:'Warning',     ico:'💾'},
-  {name:'VOIP / Phones', desc:'Internal telephony',    s:'ok',  pct:95,  badge:'Operational', ico:'📞'},
-  {name:'Printer Network',desc:'Shared print queue',   s:'err', pct:28,  badge:'Issue',       ico:'🖨️'},
-];
 
 const ANNOUNCEMENTS = []; // Loaded from localStorage — manage via Admin Portal
 
@@ -533,38 +458,123 @@ let TASKS = [];
 
 const STATUS_LABEL = {open:'Open',progress:'In Progress',done:'Done',waiting:'Waiting'};
 
-const BOT = [
-  {m:/ticket|issue|problem|broken|not working/i,   r:'I can help with that! Click <b>Submit Support Ticket</b> above, or describe your issue and I\'ll guide you.'},
-  {m:/password|reset|locked/i,                     r:'For password resets, submit a ticket with category <em>Account / Access</em> or email <b>it@bluewater.com</b>. Turnaround is usually under 30 min.'},
-  {m:/laptop|computer|pc|hardware|screen/i,        r:'For hardware issues please submit a ticket — include the device tag number (sticker on the bottom) and describe the problem.'},
-  {m:/vpn|remote|work from home/i,                 r:'VPN is currently <b>operational</b> at 97% uptime. If you can\'t connect, try reconnecting. Still stuck? Submit a ticket.'},
-  {m:/printer|print/i,                             r:'⚠️ There\'s a known issue with the printer network right now. Our team is actively on it — check the System Health section for live updates.'},
-  {m:/email|outlook|exchange/i,                    r:'Email servers are <b>fully operational</b>. If Outlook is playing up, try restarting the app. Still broken? Submit a ticket.'},
-  {m:/it service|device request|materials|equipment|request|order|supplies/i, r:'Use the <b>IT Service / Device Request</b> button above to request a service, device, or IT equipment. Manager approval may be needed for some items.'},
-  {m:/status|health|system|down/i,                 r:'Current: Email ✅  VPN ✅  Internet ✅  AD ✅  |  File Server ⚠️ degraded  |  Backup ⚠️ warning  |  Printers 🔴 issue. See System Health for details.'},
-  {m:/hi|hello|hey|help|start/i,                   r:'Hi there! 👋 Ask me anything IT-related — system status, how to submit a ticket, or request equipment. How can I help?'},
-];
-const FALLBACK = [
-  'Thanks for reaching out! For the fastest resolution, please submit a support ticket using the button above.',
-  'I\'ve noted your message. An IT technician will follow up. For urgent matters, submit a ticket so it gets prioritised.',
-  'Good question! Submitting a ticket ensures your request is tracked and assigned to the right technician.',
+// ══════════════════════════════════════════════════════════════
+// 💻 SYSTEM HEALTH — Real live checks
+// ══════════════════════════════════════════════════════════════
+
+// Services to check
+const HEALTH_SERVICES = [
+  { name:'Exchange Online',       desc:'Email',                   type:'m365', id:'Exchange' },
+  { name:'OneDrive / SharePoint', desc:'Files & collaboration',   type:'m365', id:'SharePoint' },
+  { name:'Microsoft Teams',       desc:'Calls & meetings',        type:'m365', id:'MicrosoftTeams' },
+  { name:'bluewateryachting.com', desc:'Public website',          type:'url',  url:'https://bluewateryachting.com' },
+  { name:'BW Intranet',           desc:'Internal portal',         type:'url',  url:'https://bluewateryachting.com/_intranet' },
 ];
 
-// ── RENDER HEALTH ──────────────────────────────────────────
-function renderHealth(){
-  document.getElementById('healthList').innerHTML = HEALTH.map(h=>`
-    <div class="health-row">
-      <div class="h-left">
-        <div class="h-icon ${h.s}">${h.ico}</div>
-        <div><div class="h-name">${h.name}</div><div class="h-desc">${h.desc}</div></div>
-      </div>
-      <div class="h-right">
-        <div class="h-bar-wrap"><div class="h-bar ${h.s}" style="width:${h.pct}%"></div></div>
-        <div class="h-pct">${h.pct}%</div>
-        <div class="health-badge ${h.s}"><span class="dot"></span>${h.badge}</div>
-      </div>
-    </div>`).join('');
+// Microsoft 365 status fetched once and cached
+let m365StatusCache = null;
+
+async function fetchM365Status() {
+  if (m365StatusCache) return m365StatusCache;
+  try {
+    // Microsoft public status API (no auth, no key needed)
+    const res = await fetch('https://status.office.com/api/feed/mac', { cache:'no-store' });
+    const text = await res.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, 'text/xml');
+    const items = xml.querySelectorAll('item');
+    const map = {};
+    items.forEach(item => {
+      const title = item.querySelector('title')?.textContent || '';
+      // Active incidents contain service names
+      if (title.toLowerCase().includes('investigating') || title.toLowerCase().includes('degraded') || title.toLowerCase().includes('incident')) {
+        ['Exchange','SharePoint','MicrosoftTeams','OneDrive'].forEach(svc => {
+          if (title.toLowerCase().includes(svc.toLowerCase()) || item.textContent.toLowerCase().includes(svc.toLowerCase())) {
+            map[svc] = 'incident';
+          }
+        });
+      }
+    });
+    m365StatusCache = map;
+    return map;
+  } catch(e) {
+    return {};
+  }
 }
+
+async function checkUrl(url) {
+  const t0 = Date.now();
+  try {
+    // Use no-cors fetch — we can't read body but a resolved promise means the server responded
+    await fetch(url, { method:'HEAD', mode:'no-cors', cache:'no-store' });
+    const ms = Date.now() - t0;
+    return { ok: true, ms };
+  } catch(e) {
+    return { ok: false, ms: null };
+  }
+}
+
+function renderHealthRow(name, desc, status, detail) {
+  // status: 'ok' | 'warn' | 'err' | 'checking'
+  const colors = {
+    ok:       { dot:'#00aa66', bg:'#d4f4e7', text:'#007744', label:'Operational' },
+    warn:     { dot:'#dd8800', bg:'#fff5d6', text:'#996600', label:'Degraded'    },
+    err:      { dot:'#cc2244', bg:'#ffe0e6', text:'#cc2244', label:'Issue'       },
+    checking: { dot:'#aabbcc', bg:'#f0f4f8', text:'#6688aa', label:'Checking…'  },
+  };
+  const c = colors[status] || colors.checking;
+  const pulse = (status === 'warn') ? 'animation:pulse 1s infinite' : (status === 'err') ? 'animation:pulse .5s infinite' : '';
+  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0;${pulse}"></div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text-primary)">${name}</div>
+        <div style="font-size:11px;color:var(--text-muted)">${desc}</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      ${detail ? `<span style="font-size:11px;color:var(--text-muted)">${detail}</span>` : ''}
+      <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:${c.bg};color:${c.text}">${c.label}</span>
+    </div>
+  </div>`;
+}
+
+async function runHealthChecks() {
+  const container = document.getElementById('health-list');
+  const lastCheck = document.getElementById('health-last-check');
+  if (!container) return;
+
+  // Show "checking" state for all rows immediately
+  container.innerHTML = HEALTH_SERVICES.map(s => renderHealthRow(s.name, s.desc, 'checking', '')).join('');
+
+  // Fetch M365 status in parallel with URL checks
+  const [m365, ...urlResults] = await Promise.all([
+    fetchM365Status(),
+    ...HEALTH_SERVICES.filter(s => s.type === 'url').map(s => checkUrl(s.url))
+  ]);
+
+  let urlIdx = 0;
+  const rows = HEALTH_SERVICES.map(s => {
+    if (s.type === 'm365') {
+      const hasIncident = m365[s.id] === 'incident';
+      return renderHealthRow(s.name, s.desc, hasIncident ? 'warn' : 'ok', '');
+    } else {
+      const r = urlResults[urlIdx++];
+      const status = r.ok ? 'ok' : 'err';
+      const detail = r.ok && r.ms ? `${r.ms}ms` : (r.ok ? '' : 'Unreachable');
+      return renderHealthRow(s.name, s.desc, status, detail);
+    }
+  });
+
+  container.innerHTML = rows.join('');
+
+  const now = new Date();
+  if (lastCheck) lastCheck.textContent = 'Last checked ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+
+// Run on load, then every 2 minutes
+runHealthChecks();
+setInterval(runHealthChecks, 120000);
 
 // ── RENDER ANNOUNCEMENTS — reads from localStorage (managed via Admin Portal) ──
 function renderAnnouncements(){
@@ -617,20 +627,6 @@ function filterTasks(f,btn){
   renderTasks(f);
 }
 
-
-function sendMsg(){
-  const inp=document.getElementById('chatInput');
-  const txt=inp.value.trim();
-  if(!txt)return;
-  addMsg('user',txt); inp.value='';
-  showTyping();
-  setTimeout(()=>{
-    removeTyping();
-    const r=BOT.find(b=>b.m.test(txt));
-    addMsg('bot',r?r.r:FALLBACK[Math.floor(Math.random()*FALLBACK.length)]);
-  },800+Math.random()*700);
-}
-
 function addMsg(type,html){
   const t=new Date();
   const time=t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0');
@@ -676,7 +672,6 @@ function showToast(msg){
 }
 
 // ── INIT ───────────────────────────────────────────────────
-renderHealth();
 renderAnnouncements();
 renderTasks('all');
 </script>
