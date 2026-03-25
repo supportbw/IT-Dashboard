@@ -2282,7 +2282,7 @@
         <div class="page-subtitle">Complete register of all IT devices and software licences</div>
       </div>
       <div style="display:flex;gap:10px;align-items:center">
-        <button class="btn btn-primary" onclick="openAddDeviceModal()">+ Add Device</button>
+        <button class="btn btn-primary" onclick="openAddDeviceModal()">+ Add Item</button>
         <button class="btn btn-secondary btn-sm" onclick="exportInventory()">📥 Export CSV</button>
       </div>
     </div>
@@ -3262,6 +3262,55 @@ const SERVICES = [
 ];
 
 
+function switchAddItemTab(tab) {
+  document.getElementById('ai-panel-device').style.display  = tab === 'device'  ? '' : 'none';
+  document.getElementById('ai-panel-service').style.display = tab === 'service' ? '' : 'none';
+  document.getElementById('ai-tab-device').style.borderBottomColor  = tab === 'device'  ? 'white' : 'transparent';
+  document.getElementById('ai-tab-service').style.borderBottomColor = tab === 'service' ? 'white' : 'transparent';
+  document.getElementById('ai-tab-device').style.opacity  = tab === 'device'  ? '1' : '0.55';
+  document.getElementById('ai-tab-service').style.opacity = tab === 'service' ? '1' : '0.55';
+}
+
+function addServiceToInventory() {
+  const name    = document.getElementById('svc-name').value.trim();
+  const cat     = document.getElementById('svc-cat').value;
+  const dept    = document.getElementById('svc-dept-input').value.trim() || '—';
+  const billing = document.getElementById('svc-billing').value || '—';
+  const amount  = document.getElementById('svc-amount').value.trim() || '—';
+  const card    = document.getElementById('svc-card').value.trim() || '—';
+  const renewal = document.getElementById('svc-renewal').value.trim() || '—';
+  const notes   = document.getElementById('svc-comments').value.trim();
+  if (!name || !cat) { showToast('⚠️ Please fill in Name and Category.'); return; }
+  const catColors = {
+    'AI Services':'#7c3aed','App':'#0891b2','Internet':'#0066cc','Mailing':'#059669',
+    'Marketing':'#d97706','Mobile':'#dc2626','Office Programs':'#0066cc',
+    'Payment Platform':'#059669','Phone':'#7c3aed','Project Management':'#0891b2',
+    'Support':'#dc2626','Website':'#0066cc','Other':'#6b7280'
+  };
+  const color = catColors[cat] || '#0066cc';
+  const subBadge = billing === 'Monthly'
+    ? '<span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Monthly</span>'
+    : billing === 'Yearly'
+    ? '<span style="background:#dcfce7;color:#15803d;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">Yearly</span>'
+    : `<span style="color:var(--text-secondary);font-size:12px">${billing}</span>`;
+  const notesCell = notes ? `<span style="color:var(--text-secondary);font-size:12px">${notes}</span>` : '—';
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td><span style="background:${color}22;color:${color};padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700">${cat}</span></td>
+    <td style="font-weight:600">${name}</td>
+    <td style="font-size:12px;color:var(--text-secondary)">${dept}</td>
+    <td>${subBadge}</td>
+    <td style="font-size:12px">${card}</td>
+    <td>${notesCell}</td>`;
+  document.getElementById('svc-tbody').appendChild(row);
+  // clear form
+  ['svc-name','svc-dept-input','svc-requested-by','svc-amount','svc-card','svc-renewal','svc-comments'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('svc-cat').value = '';
+  document.getElementById('svc-billing').value = '';
+  document.getElementById('add-device-modal').classList.remove('open');
+  showToast('🔧 Service added to inventory!');
+}
+
 function switchInventoryTab(tab) {
   document.getElementById('panel-devices').style.display = tab === 'devices' ? '' : 'none';
   document.getElementById('panel-services').style.display = tab === 'services' ? '' : 'none';
@@ -3411,87 +3460,222 @@ document.getElementById('req-date').value = new Date().toISOString().split('T')[
 document.getElementById('recv-date').value = new Date().toISOString().split('T')[0];
 </script>
 
-<!-- ADD DEVICE MODAL -->
+<!-- ADD ITEM MODAL -->
 <div class="modal-overlay" id="add-device-modal">
-  <div class="modal" style="width:min(680px,95vw)">
+  <div class="modal" style="width:min(720px,96vw);max-height:92vh;overflow-y:auto">
     <div class="modal-header">
       <div>
-        <div class="modal-title">🗄️ Add Device to Inventory</div>
-        <div style="font-size:13px;opacity:.7;margin-top:2px">Manually register a new or existing device</div>
+        <div class="modal-title">➕ Add Item to Inventory</div>
+        <div style="font-size:13px;opacity:.7;margin-top:2px">Register a device or a software service / licence</div>
       </div>
       <button class="modal-close" onclick="document.getElementById('add-device-modal').classList.remove('open')">✕</button>
     </div>
+
+    <!-- Tab switcher -->
+    <div style="display:flex;gap:0;border-bottom:2px solid rgba(255,255,255,.15);padding:0 26px">
+      <button id="ai-tab-device" onclick="switchAddItemTab('device')" style="padding:10px 22px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;background:none;border:none;border-bottom:3px solid white;color:white;cursor:pointer;margin-bottom:-2px;opacity:1;transition:all .2s">🖥️ Device</button>
+      <button id="ai-tab-service" onclick="switchAddItemTab('service')" style="padding:10px 22px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;background:none;border:none;border-bottom:3px solid transparent;color:white;cursor:pointer;margin-bottom:-2px;opacity:.55;transition:all .2s">🔧 Service / Licence</button>
+    </div>
+
     <div class="modal-body">
-      <div class="form-grid" style="gap:14px">
-        <div class="form-grid form-grid-2">
+
+      <!-- ── DEVICE PANEL ── -->
+      <div id="ai-panel-device">
+        <div class="form-grid" style="gap:14px">
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Requested By *</label>
+              <input type="text" id="ad-by" placeholder="Full name">
+            </div>
+            <div class="form-group">
+              <label>Department *</label>
+              <select id="ad-dept">
+                <option value="">Select department</option>
+                <option>Management</option><option>Charter</option><option>Sales</option>
+                <option>Operations</option><option>Finance</option><option>Marketing</option><option>IT</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Approved By *</label>
+              <input type="text" id="ad-approved" placeholder="Manager name">
+            </div>
+            <div class="form-group">
+              <label>Position / Role</label>
+              <input type="text" id="ad-role" placeholder="Job title">
+            </div>
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Device / Item Requested *</label>
+              <select id="ad-device-req">
+                <option value="">Select device type</option>
+                <option>MacBook Pro 14"</option>
+                <option>MacBook Pro 16"</option>
+                <option>MacBook Air</option>
+                <option>Windows Laptop</option>
+                <option>iPhone 16 Pro</option>
+                <option>iPhone 16</option>
+                <option>iPad Pro</option>
+                <option>iPad</option>
+                <option>27" Monitor</option>
+                <option>34" Ultrawide Monitor</option>
+                <option>Keyboard &amp; Mouse Set</option>
+                <option>Docking Station</option>
+                <option>Headset</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Device Type *</label>
+              <select id="ad-type">
+                <option>Laptop</option><option>Phone</option><option>Tablet</option>
+                <option>Monitor</option><option>Accessory</option><option>Other</option>
+              </select>
+            </div>
+          </div>
           <div class="form-group">
-            <label>Device Type *</label>
-            <select id="ad-type">
-              <option>Laptop</option><option>Phone</option><option>Tablet</option>
-              <option>Monitor</option><option>Accessory</option><option>Other</option>
+            <label>Model / Full Description *</label>
+            <input type="text" id="ad-model" placeholder='e.g. Apple MacBook Pro 14" M3 Pro 18GB 512GB Space Grey'>
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Serial Number</label>
+              <input type="text" id="ad-serial" placeholder="e.g. C02XG2JNHV2R" style="font-family:monospace">
+            </div>
+            <div class="form-group">
+              <label>Status *</label>
+              <select id="ad-status">
+                <option>In Use</option><option>Available</option>
+                <option>In Repair</option><option>Retired</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Assigned To</label>
+              <input type="text" id="ad-assigned" placeholder="Full name or leave blank">
+            </div>
+            <div class="form-group">
+              <label>Date Received</label>
+              <input type="date" id="ad-date">
+            </div>
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Request Date</label>
+              <input type="date" id="ad-req-date">
+            </div>
+            <div class="form-group">
+              <label>Required By</label>
+              <input type="date" id="ad-needed">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="ad-priority">
+              <option>Standard</option><option>Urgent</option><option>Low</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Status *</label>
-            <select id="ad-status">
-              <option>In Use</option><option>Available</option>
-              <option>In Repair</option><option>Retired</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Model / Full Description *</label>
-          <input type="text" id="ad-model" placeholder="e.g. Apple MacBook Pro 14&quot; M3 Pro 18GB 512GB Space Grey">
-        </div>
-        <div class="form-grid form-grid-2">
-          <div class="form-group">
-            <label>Serial Number *</label>
-            <input type="text" id="ad-serial" placeholder="e.g. C02XG2JNHV2R" style="font-family:monospace">
+            <label>Device Photo <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+            <div class="photo-upload-zone" id="ad-photo-upload-zone" style="display:flex;flex-direction:column;align-items:center" onclick="document.getElementById('ad-photo-input').click()">
+              <input type="file" id="ad-photo-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
+              <div class="upload-icon">📷</div>
+              <div class="upload-label">Click to upload a photo</div>
+              <div class="upload-sub">JPG, PNG, WEBP — max 5MB</div>
+            </div>
+            <div class="photo-preview-wrap" style="width:100%;margin-top:8px">
+              <img id="ad-photo-preview" class="photo-preview-img" src="" alt="Device photo">
+              <button id="ad-photo-remove" class="photo-preview-remove" onclick="removePhoto()" style="display:none;position:absolute;top:-8px;right:-8px">✕</button>
+            </div>
           </div>
           <div class="form-group">
-            <label>Date Received</label>
-            <input type="date" id="ad-date">
+            <label>Justification / Notes</label>
+            <textarea id="ad-comments" placeholder="Business reason, IMEI, accessories, warranty info…"></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="addDeviceToInventory()">🖥️ Add Device</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('add-device-modal').classList.remove('open')">Cancel</button>
           </div>
         </div>
-        <div class="form-grid form-grid-2">
+      </div><!-- /ai-panel-device -->
+
+      <!-- ── SERVICE PANEL ── -->
+      <div id="ai-panel-service" style="display:none">
+        <div class="form-grid" style="gap:14px">
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Service / Licence Name *</label>
+              <input type="text" id="svc-name" placeholder="e.g. Adobe Creative Cloud">
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="svc-cat">
+                <option value="">Select category</option>
+                <option>AI Services</option>
+                <option>App</option>
+                <option>Internet</option>
+                <option>Mailing</option>
+                <option>Marketing</option>
+                <option>Mobile</option>
+                <option>Office Programs</option>
+                <option>Payment Platform</option>
+                <option>Phone</option>
+                <option>Project Management</option>
+                <option>Support</option>
+                <option>Website</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text" id="svc-dept-input" placeholder="e.g. ALL / Charter / Management">
+            </div>
+            <div class="form-group">
+              <label>Requested By</label>
+              <input type="text" id="svc-requested-by" placeholder="Full name">
+            </div>
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Billing Frequency</label>
+              <select id="svc-billing">
+                <option value="">— Select —</option>
+                <option>Monthly</option>
+                <option>Yearly</option>
+                <option>One-off</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Amount</label>
+              <input type="text" id="svc-amount" placeholder="e.g. €29 / month">
+            </div>
+          </div>
+          <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Card Holder</label>
+              <input type="text" id="svc-card" placeholder="Initials or name (e.g. AG)">
+            </div>
+            <div class="form-group">
+              <label>Renewal Year</label>
+              <input type="text" id="svc-renewal" placeholder="e.g. 2026">
+            </div>
+          </div>
           <div class="form-group">
-            <label>Assigned To</label>
-            <input type="text" id="ad-assigned" placeholder="Full name or leave blank">
+            <label>Comments / Notes</label>
+            <textarea id="svc-comments" placeholder="Login info location, purpose, link, notes…"></textarea>
           </div>
-          <div class="form-group">
-            <label>Department *</label>
-            <select id="ad-dept">
-              <option>IT</option><option>Management</option><option>Charter</option>
-              <option>Sales</option><option>Operations</option><option>Finance</option><option>Marketing</option>
-            </select>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="addServiceToInventory()">🔧 Add Service</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('add-device-modal').classList.remove('open')">Cancel</button>
           </div>
         </div>
-        <div class="form-group">
-          <label>Approved By</label>
-          <input type="text" id="ad-approved" placeholder="Manager who approved the purchase">
-        </div>
-        <div class="form-group">
-          <label>Device Photo <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
-          <div class="photo-upload-zone" id="ad-photo-upload-zone" style="display:flex;flex-direction:column;align-items:center" onclick="document.getElementById('ad-photo-input').click()">
-            <input type="file" id="ad-photo-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
-            <div class="upload-icon">📷</div>
-            <div class="upload-label">Click to upload a photo</div>
-            <div class="upload-sub">JPG, PNG, WEBP — max 5MB</div>
-          </div>
-          <div class="photo-preview-wrap" style="width:100%;margin-top:8px">
-            <img id="ad-photo-preview" class="photo-preview-img" src="" alt="Device photo">
-            <button id="ad-photo-remove" class="photo-preview-remove" onclick="removePhoto()" style="display:none;position:absolute;top:-8px;right:-8px">✕</button>
-          </div>
-        </div>
-                <div class="form-group">
-          <label>Comments</label>
-          <textarea id="ad-comments" placeholder="IMEI, accessories included, warranty info, notes…"></textarea>
-        </div>
-        <div class="form-actions">
-          <button class="btn btn-primary" onclick="addDeviceToInventory()">🗄️ Add to Inventory</button>
-          <button class="btn btn-secondary" onclick="document.getElementById('add-device-modal').classList.remove('open')">Cancel</button>
-        </div>
-      </div>
+      </div><!-- /ai-panel-service -->
+
     </div>
   </div>
 </div>
