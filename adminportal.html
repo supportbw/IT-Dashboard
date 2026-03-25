@@ -1061,6 +1061,20 @@
           </div>
           <div class="form-grid form-grid-2">
             <div class="form-group">
+              <label>Location <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+              <select id="req-location" onchange="updatePreview();toggleLocationOther('req-location','req-location-other')">
+                <option value="">Select location</option>
+                <option>France – Antibes</option>
+                <option>France – Biot</option>
+                <option>Monaco</option>
+                <option>Spain – Palma</option>
+                <option>UAE – Dubai</option>
+                <option>Russia – Moscow</option>
+                <option value="Other">Other</option>
+              </select>
+              <input type="text" id="req-location-other" placeholder="Specify location…" style="display:none;margin-top:8px" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
               <label>Approved By *</label>
               <input type="text" id="req-approved" placeholder="Manager name" oninput="updatePreview()">
             </div>
@@ -1134,6 +1148,7 @@
             <table style="width:100%;font-size:12px;border-collapse:collapse">
               <tr><td style="padding:5px 0;color:#5577aa;width:140px">Requested By:</td><td id="prev-by" style="font-weight:600">—</td></tr>
               <tr><td style="padding:5px 0;color:#5577aa">Department:</td><td id="prev-dept" style="font-weight:600">—</td></tr>
+              <tr><td style="padding:5px 0;color:#5577aa">Location:</td><td id="prev-location" style="font-weight:600">—</td></tr>
               <tr><td style="padding:5px 0;color:#5577aa">Position:</td><td id="prev-role" style="font-weight:600">—</td></tr>
               <tr><td style="padding:5px 0;color:#5577aa">Approved By:</td><td id="prev-approved" style="font-weight:600">—</td></tr>
               <tr><td style="padding:5px 0;color:#5577aa">Device:</td><td id="prev-device2" style="font-weight:600">—</td></tr>
@@ -2983,9 +2998,19 @@ function switchTab(id, btn) {
 }
 
 // Request form live preview
+function toggleLocationOther(selectId, inputId) {
+  const sel = document.getElementById(selectId);
+  const inp = document.getElementById(inputId);
+  inp.style.display = sel.value === 'Other' ? '' : 'none';
+  if (sel.value !== 'Other') inp.value = '';
+}
+
 function updatePreview() {
   const by = document.getElementById('req-by').value || '—';
   const dept = document.getElementById('req-dept').value || '—';
+  const locSel = document.getElementById('req-location').value;
+  const locOther = document.getElementById('req-location-other').value.trim();
+  const location = locSel === 'Other' ? (locOther || 'Other') : (locSel || '—');
   const approved = document.getElementById('req-approved').value || '—';
   const role = document.getElementById('req-role').value || '—';
   const device = document.getElementById('req-device').value || '—';
@@ -2998,6 +3023,7 @@ function updatePreview() {
   document.getElementById('prev-device2').textContent = device;
   document.getElementById('prev-by').textContent = by;
   document.getElementById('prev-dept').textContent = dept;
+  document.getElementById('prev-location').textContent = location;
   document.getElementById('prev-role').textContent = role;
   document.getElementById('prev-approved').textContent = approved;
   document.getElementById('prev-date').textContent = date;
@@ -3497,6 +3523,20 @@ document.getElementById('recv-date').value = new Date().toISOString().split('T')
             </div>
           </div>
           <div class="form-grid form-grid-2">
+            <div class="form-group">
+              <label>Location <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+              <select id="ad-location" onchange="toggleLocationOther('ad-location','ad-location-other')">
+                <option value="">Select location</option>
+                <option>France – Antibes</option>
+                <option>France – Biot</option>
+                <option>Monaco</option>
+                <option>Spain – Palma</option>
+                <option>UAE – Dubai</option>
+                <option>Russia – Moscow</option>
+                <option value="Other">Other</option>
+              </select>
+              <input type="text" id="ad-location-other" placeholder="Specify location…" style="display:none;margin-top:8px">
+            </div>
             <div class="form-group">
               <label>Approved By *</label>
               <input type="text" id="ad-approved" placeholder="Manager name">
