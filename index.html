@@ -159,6 +159,8 @@ header{background:var(--blue-deepest);padding:0 32px;height:64px;display:flex;al
 .qa-sub{font-size:10px;color:rgba(204,239,255,.5);margin-top:1px}
 
 /* Chat */
+.health-sidebar{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.chat-label{padding:10px 16px 8px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(204,239,255,.35);border-bottom:1px solid rgba(0,102,204,.1)}
 .msg{display:flex;flex-direction:column;gap:2px;animation:fadeUp .3s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .msg.bot{align-items:flex-start}
@@ -197,6 +199,31 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
 .card-title-left{display:flex;align-items:center;gap:8px}
 
 /* ── HEALTH ── */
+.health-list{display:flex;flex-direction:column;gap:8px}
+.health-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;transition:border .2s}
+.health-row:hover{border-color:var(--border-dark)}
+.h-left{display:flex;align-items:center;gap:10px}
+.h-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.h-icon.ok{background:#d4f4e7}
+.h-icon.warn{background:#fff5d6}
+.h-icon.err{background:#ffe0e6}
+.h-name{font-size:13px;font-weight:600;color:var(--blue-deepest)}
+.h-desc{font-size:11px;color:var(--text-muted);margin-top:1px}
+.h-right{display:flex;align-items:center;gap:10px}
+.h-bar-wrap{width:80px;height:5px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.h-bar{height:100%;border-radius:3px;transition:width 1s ease}
+.h-bar.ok{background:linear-gradient(90deg,#00aa66,#44dd99)}
+.h-bar.warn{background:linear-gradient(90deg,#dd8800,#ffcc44)}
+.h-bar.err{background:linear-gradient(90deg,#cc2244,#ff6688)}
+.h-pct{font-size:12px;font-weight:600;min-width:32px;text-align:right;color:var(--text-secondary)}
+.health-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.health-badge .dot{width:5px;height:5px;border-radius:50%}
+.health-badge.ok{background:#d4f4e7;color:#007744}
+.health-badge.ok .dot{background:#00aa66}
+.health-badge.warn{background:#fff5d6;color:#996600}
+.health-badge.warn .dot{background:#dd8800;animation:pulse 1s infinite}
+.health-badge.err{background:#ffe0e6;color:#cc2244}
+.health-badge.err .dot{background:#cc2244;animation:pulse .5s infinite}
 
 /* ── ANNOUNCEMENTS ── */
 .announce-list{display:flex;flex-direction:column;gap:8px}
@@ -287,7 +314,7 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
   <aside class="sidebar">
     <div class="sidebar-head">
       <h2>IT Support</h2>
-      <p>Quick actions &amp; announcements</p>
+      <p>Quick actions &amp; system status</p>
     </div>
 
     <div class="qa-wrap">
@@ -302,6 +329,10 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
       </div>
     </div>
 
+    <div class="health-sidebar">
+      <div class="chat-label">💻 System Health <span id="health-last-check" style="float:right;font-size:9px;opacity:.5;font-weight:400;letter-spacing:0;text-transform:none">Checking…</span></div>
+      <div id="healthList" style="padding:10px 12px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1"></div>
+    </div>
   </aside>
 
   <!-- MAIN -->
@@ -338,46 +369,37 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
     <!-- TWO COL -->
     <div class="two-col">
 
-      <!-- LEFT: ANNOUNCEMENTS -->
-      <div class="card">
-        <div class="card-title"><div class="card-title-left">📢 IT Announcements</div></div>
-        <div class="announce-list" id="announceList"></div>
-      </div>
-
-      <!-- RIGHT COLUMN -->
+      <!-- LEFT -->
       <div style="display:flex;flex-direction:column;gap:20px">
 
-        <!-- SYSTEM HEALTH -->
+        <!-- ANNOUNCEMENTS -->
         <div class="card">
-          <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
-            <div class="card-title-left">💻 System Health</div>
-            <span id="health-last-check" style="font-size:11px;color:var(--text-muted);font-weight:400">Checking…</span>
-          </div>
-          <div id="health-list" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div class="card-title"><div class="card-title-left">📢 IT Announcements</div></div>
+          <div class="announce-list" id="announceList"></div>
         </div>
 
-        <!-- TASK BOARD -->
-        <div class="card" style="padding-bottom:16px">
-          <div class="tb-head">
-            <div>
-              <h3>IT Task Board</h3>
-              <div class="tb-sub">Active IT tasks &amp; issues</div>
-            </div>
-            <a href="adminportal.html" target="_blank" class="admin-link">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              Open Admin
-            </a>
-          </div>
-          <div class="task-filters">
-            <button class="filter-btn active" onclick="filterTasks('all',this)">All</button>
-            <button class="filter-btn" onclick="filterTasks('open',this)">Open</button>
-            <button class="filter-btn" onclick="filterTasks('progress',this)">In Progress</button>
-            <button class="filter-btn" onclick="filterTasks('done',this)">Done</button>
-            <button class="filter-btn" onclick="filterTasks('waiting',this)">Waiting</button>
-          </div>
-          <div class="task-list" id="taskList"></div>
-        </div>
+      </div>
 
+      <!-- RIGHT: TASK BOARD -->
+      <div class="card" style="padding-bottom:16px">
+        <div class="tb-head">
+          <div>
+            <h3>IT Task Board</h3>
+            <div class="tb-sub">Active IT tasks &amp; issues</div>
+          </div>
+          <a href="adminportal.html" target="_blank" class="admin-link">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Open Admin
+          </a>
+        </div>
+        <div class="task-filters">
+          <button class="filter-btn active" onclick="filterTasks('all',this)">All</button>
+          <button class="filter-btn" onclick="filterTasks('open',this)">Open</button>
+          <button class="filter-btn" onclick="filterTasks('progress',this)">In Progress</button>
+          <button class="filter-btn" onclick="filterTasks('done',this)">Done</button>
+          <button class="filter-btn" onclick="filterTasks('waiting',this)">Waiting</button>
+        </div>
+        <div class="task-list" id="taskList"></div>
       </div>
 
     </div>
@@ -451,7 +473,6 @@ main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column
 
 <script>
 // ── DATA ──────────────────────────────────────────────────
-
 const ANNOUNCEMENTS = []; // Loaded from localStorage — manage via Admin Portal
 
 let TASKS = [];
@@ -459,122 +480,86 @@ let TASKS = [];
 const STATUS_LABEL = {open:'Open',progress:'In Progress',done:'Done',waiting:'Waiting'};
 
 // ══════════════════════════════════════════════════════════════
-// 💻 SYSTEM HEALTH — Real live checks
+// 💻 SYSTEM HEALTH — Real live checks, auto-refreshes every 2 min
 // ══════════════════════════════════════════════════════════════
-
-// Services to check
 const HEALTH_SERVICES = [
-  { name:'Exchange Online',       desc:'Email',                   type:'m365', id:'Exchange' },
-  { name:'OneDrive / SharePoint', desc:'Files & collaboration',   type:'m365', id:'SharePoint' },
-  { name:'Microsoft Teams',       desc:'Calls & meetings',        type:'m365', id:'MicrosoftTeams' },
-  { name:'bluewateryachting.com', desc:'Public website',          type:'url',  url:'https://bluewateryachting.com' },
-  { name:'BW Intranet',           desc:'Internal portal',         type:'url',  url:'https://bluewateryachting.com/_intranet' },
+  {name:'Exchange Online',       desc:'Email',               type:'m365', id:'Exchange'},
+  {name:'OneDrive / SharePoint', desc:'Files & collaboration',type:'m365', id:'SharePoint'},
+  {name:'Microsoft Teams',       desc:'Calls & meetings',    type:'m365', id:'MicrosoftTeams'},
+  {name:'bluewateryachting.com', desc:'Public website',      type:'url',  url:'https://bluewateryachting.com'},
+  {name:'BW Intranet',           desc:'Internal portal',     type:'url',  url:'https://bluewateryachting.com/_intranet'},
 ];
 
-// Microsoft 365 status fetched once and cached
-let m365StatusCache = null;
+let m365Cache = null;
 
-async function fetchM365Status() {
-  if (m365StatusCache) return m365StatusCache;
+async function fetchM365(){
+  if(m365Cache) return m365Cache;
   try {
-    // Microsoft public status API (no auth, no key needed)
-    const res = await fetch('https://status.office.com/api/feed/mac', { cache:'no-store' });
-    const text = await res.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, 'text/xml');
-    const items = xml.querySelectorAll('item');
+    const res = await fetch('https://status.office.com/api/feed/mac',{cache:'no-store'});
+    const xml = new DOMParser().parseFromString(await res.text(),'text/xml');
     const map = {};
-    items.forEach(item => {
-      const title = item.querySelector('title')?.textContent || '';
-      // Active incidents contain service names
-      if (title.toLowerCase().includes('investigating') || title.toLowerCase().includes('degraded') || title.toLowerCase().includes('incident')) {
-        ['Exchange','SharePoint','MicrosoftTeams','OneDrive'].forEach(svc => {
-          if (title.toLowerCase().includes(svc.toLowerCase()) || item.textContent.toLowerCase().includes(svc.toLowerCase())) {
-            map[svc] = 'incident';
-          }
+    xml.querySelectorAll('item').forEach(item => {
+      const t = item.textContent.toLowerCase();
+      if(t.includes('investigating')||t.includes('degraded')||t.includes('incident')){
+        ['Exchange','SharePoint','MicrosoftTeams'].forEach(s=>{
+          if(t.includes(s.toLowerCase())) map[s]='incident';
         });
       }
     });
-    m365StatusCache = map;
+    m365Cache = map;
+    setTimeout(()=>{m365Cache=null;},120000);
     return map;
-  } catch(e) {
-    return {};
-  }
+  } catch(e){ return {}; }
 }
 
-async function checkUrl(url) {
-  const t0 = Date.now();
-  try {
-    // Use no-cors fetch — we can't read body but a resolved promise means the server responded
-    await fetch(url, { method:'HEAD', mode:'no-cors', cache:'no-store' });
-    const ms = Date.now() - t0;
-    return { ok: true, ms };
-  } catch(e) {
-    return { ok: false, ms: null };
-  }
+async function checkUrl(url){
+  const t0=Date.now();
+  try{
+    await fetch(url,{method:'HEAD',mode:'no-cors',cache:'no-store'});
+    return {ok:true,ms:Date.now()-t0};
+  }catch(e){return {ok:false,ms:null};}
 }
 
-function renderHealthRow(name, desc, status, detail) {
-  // status: 'ok' | 'warn' | 'err' | 'checking'
-  const colors = {
-    ok:       { dot:'#00aa66', bg:'#d4f4e7', text:'#007744', label:'Operational' },
-    warn:     { dot:'#dd8800', bg:'#fff5d6', text:'#996600', label:'Degraded'    },
-    err:      { dot:'#cc2244', bg:'#ffe0e6', text:'#cc2244', label:'Issue'       },
-    checking: { dot:'#aabbcc', bg:'#f0f4f8', text:'#6688aa', label:'Checking…'  },
-  };
-  const c = colors[status] || colors.checking;
-  const pulse = (status === 'warn') ? 'animation:pulse 1s infinite' : (status === 'err') ? 'animation:pulse .5s infinite' : '';
-  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0;${pulse}"></div>
+function healthRow(name,desc,status,detail){
+  const C={ok:{dot:'#00aa66',bg:'#d4f4e7',txt:'#007744',label:'Operational'},
+            warn:{dot:'#dd8800',bg:'#fff5d6',txt:'#996600',label:'Degraded'},
+            err:{dot:'#cc2244',bg:'#ffe0e6',txt:'#cc2244',label:'Issue'},
+            checking:{dot:'#8899aa',bg:'rgba(0,102,204,.1)',txt:'rgba(204,239,255,.5)',label:'Checking…'}};
+  const c=C[status]||C.checking;
+  const pulse=status==='warn'?'animation:pulse 1s infinite':status==='err'?'animation:pulse .5s infinite':'';
+  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:rgba(0,0,0,.15);border:1px solid rgba(0,102,204,.2);border-radius:7px">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:7px;height:7px;border-radius:50%;background:${c.dot};flex-shrink:0;${pulse}"></div>
       <div>
-        <div style="font-size:13px;font-weight:600;color:var(--text-primary)">${name}</div>
-        <div style="font-size:11px;color:var(--text-muted)">${desc}</div>
+        <div style="font-size:12px;font-weight:600;color:white">${name}</div>
+        <div style="font-size:10px;color:rgba(204,239,255,.45)">${desc}</div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:8px">
-      ${detail ? `<span style="font-size:11px;color:var(--text-muted)">${detail}</span>` : ''}
-      <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:${c.bg};color:${c.text}">${c.label}</span>
+    <div style="display:flex;align-items:center;gap:6px">
+      ${detail?`<span style="font-size:10px;color:rgba(204,239,255,.4)">${detail}</span>`:''}
+      <span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;background:${c.bg};color:${c.txt}">${c.label}</span>
     </div>
   </div>`;
 }
 
-async function runHealthChecks() {
-  const container = document.getElementById('health-list');
-  const lastCheck = document.getElementById('health-last-check');
-  if (!container) return;
-
-  // Show "checking" state for all rows immediately
-  container.innerHTML = HEALTH_SERVICES.map(s => renderHealthRow(s.name, s.desc, 'checking', '')).join('');
-
-  // Fetch M365 status in parallel with URL checks
-  const [m365, ...urlResults] = await Promise.all([
-    fetchM365Status(),
-    ...HEALTH_SERVICES.filter(s => s.type === 'url').map(s => checkUrl(s.url))
-  ]);
-
-  let urlIdx = 0;
-  const rows = HEALTH_SERVICES.map(s => {
-    if (s.type === 'm365') {
-      const hasIncident = m365[s.id] === 'incident';
-      return renderHealthRow(s.name, s.desc, hasIncident ? 'warn' : 'ok', '');
-    } else {
-      const r = urlResults[urlIdx++];
-      const status = r.ok ? 'ok' : 'err';
-      const detail = r.ok && r.ms ? `${r.ms}ms` : (r.ok ? '' : 'Unreachable');
-      return renderHealthRow(s.name, s.desc, status, detail);
-    }
-  });
-
-  container.innerHTML = rows.join('');
-
-  const now = new Date();
-  if (lastCheck) lastCheck.textContent = 'Last checked ' + now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+async function runHealthChecks(){
+  const el=document.getElementById('healthList');
+  const lc=document.getElementById('health-last-check');
+  if(!el) return;
+  el.innerHTML=HEALTH_SERVICES.map(s=>healthRow(s.name,s.desc,'checking','')).join('');
+  const urlServices=HEALTH_SERVICES.filter(s=>s.type==='url');
+  const [m365,...urlResults]=await Promise.all([fetchM365(),...urlServices.map(s=>checkUrl(s.url))]);
+  let ui=0;
+  el.innerHTML=HEALTH_SERVICES.map(s=>{
+    if(s.type==='m365') return healthRow(s.name,s.desc,m365[s.id]?'warn':'ok','');
+    const r=urlResults[ui++];
+    return healthRow(s.name,s.desc,r.ok?'ok':'err',r.ok&&r.ms?r.ms+'ms':r.ok?'':'Unreachable');
+  }).join('');
+  if(lc) lc.textContent='Updated '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 }
 
-// Run on load, then every 2 minutes
 runHealthChecks();
-setInterval(runHealthChecks, 120000);
+setInterval(runHealthChecks,120000);
 
 // ── RENDER ANNOUNCEMENTS — reads from localStorage (managed via Admin Portal) ──
 function renderAnnouncements(){
@@ -626,27 +611,6 @@ function filterTasks(f,btn){
   btn.classList.add('active');
   renderTasks(f);
 }
-
-function addMsg(type,html){
-  const t=new Date();
-  const time=t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0');
-  const msgs=document.getElementById('chatMessages');
-  const d=document.createElement('div');
-  d.className=`msg ${type}`;
-  d.innerHTML=type==='bot'
-    ?`<div class="bot-av">BW</div><div class="msg-row"><div class="msg-bubble">${html}</div></div><div class="msg-time">${time}</div>`
-    :`<div class="msg-row"><div class="msg-bubble">${html}</div></div><div class="msg-time">${time}</div>`;
-  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
-}
-
-function showTyping(){
-  const msgs=document.getElementById('chatMessages');
-  const d=document.createElement('div');
-  d.className='msg bot'; d.id='typing';
-  d.innerHTML='<div class="bot-av">BW</div><div class="msg-row"><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>';
-  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
-}
-function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
 
 // ── MODALS ─────────────────────────────────────────────────
 function openModal(id){document.getElementById(id).classList.add('open');}
