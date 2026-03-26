@@ -1956,7 +1956,31 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>// ── SHARED CATEGORY DATA (defined early so DOMContentLoaded can use it) ──
+var SVC_CATEGORIES = ['AI Services','App','Internet','Mailing','Marketing','Mobile','Office Programs','Payment Platform','Phone','Project Management','Support','Website','Yachts'];
+var CAT_COLORS = {
+  'AI Services':'#7c3aed','App':'#0891b2','Internet':'#0066cc','Mailing':'#059669',
+  'Marketing':'#d97706','Mobile':'#dc2626','Office Programs':'#0066cc',
+  'Payment Platform':'#059669','Phone':'#7c3aed','Project Management':'#0891b2',
+  'Support':'#dc2626','Website':'#0066cc','Yachts':'#0066cc','Other':'#6b7280'
+};
+function getCatColor(cat) { return CAT_COLORS[cat] || '#0066cc'; }
+function rebuildCatDropdowns() {
+  var filterSel = document.getElementById('svc-filter-cat');
+  if (filterSel) {
+    var cur = filterSel.value;
+    filterSel.innerHTML = '<option value="">All Categories</option>' +
+      SVC_CATEGORIES.map(function(cat){ return '<option' + (cat===cur?' selected':'') + '>' + cat + '</option>'; }).join('');
+  }
+  var addSel = document.getElementById('svc-cat');
+  if (addSel) {
+    var cur2 = addSel.value;
+    addSel.innerHTML = '<option value="">Select category</option>' +
+      SVC_CATEGORIES.map(function(cat){ return '<option' + (cat===cur2?' selected':'') + '>' + cat + '</option>'; }).join('');
+  }
+}
+
+
 // Navigation
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -2414,8 +2438,8 @@ let invAssetCounter = 0;
 let orderCounter = 0;
 
 const SERVICES = [
-  {cat:'Ai Services',name:'ChatGPT',dept:'Crew / Digital',sub:'Monthly',card:'AG',comments:''},
-  {cat:'Ai Services',name:'Claude AI',dept:'Management',sub:'Monthly',card:'AG',comments:''},
+  {cat:'AI Services',name:'ChatGPT',dept:'Crew / Digital',sub:'Monthly',card:'AG',comments:''},
+  {cat:'AI Services',name:'Claude AI',dept:'Management',sub:'Monthly',card:'AG',comments:''},
   {cat:'App',name:'GOOLE DEV',dept:'—',sub:'Yearly',card:'AG',comments:'Have APP on Goole store'},
   {cat:'App',name:'APPLE DEV',dept:'—',sub:'Yearly',card:'AG',comments:'Have APP on APPLE store'},
   {cat:'App',name:'Onesignal',dept:'—',sub:'Monthly',card:'AG',comments:''},
@@ -2849,6 +2873,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Render SERVICES array into table
   var tbody = document.getElementById('svc-tbody');
   var emptyRow = document.getElementById('svc-empty-row');
+  rebuildCatDropdowns();
   if (tbody && typeof SERVICES !== 'undefined' && SERVICES.length) {
     if (emptyRow) emptyRow.remove();
     SERVICES.forEach(function(s) {
@@ -3164,37 +3189,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
   if(e.target === this) closeLightbox();
 });
 
-// ── CATEGORY MANAGER ──
-var SVC_CATEGORIES = ['AI Services','App','Internet','Mailing','Marketing','Mobile','Office Programs','Payment Platform','Phone','Project Management','Support','Website','Yachts'];
-
-var CAT_COLORS = {
-  'AI Services':'#7c3aed','App':'#0891b2','Internet':'#0066cc','Mailing':'#059669',
-  'Marketing':'#d97706','Mobile':'#dc2626','Office Programs':'#0066cc',
-  'Payment Platform':'#059669','Phone':'#7c3aed','Project Management':'#0891b2',
-  'Support':'#dc2626','Website':'#0066cc','Yachts':'#0066cc','Other':'#6b7280'
-};
-
-function getCatColor(cat) {
-  return CAT_COLORS[cat] || '#0066cc';
-}
-
-function rebuildCatDropdowns() {
-  // Update filter dropdown
-  var filterSel = document.getElementById('svc-filter-cat');
-  if (filterSel) {
-    var cur = filterSel.value;
-    filterSel.innerHTML = '<option value="">All Categories</option>' +
-      SVC_CATEGORIES.map(function(c){ return '<option' + (c === cur ? ' selected' : '') + '>' + c + '</option>'; }).join('');
-  }
-  // Update add-service modal category dropdown
-  var addSel = document.getElementById('svc-cat');
-  if (addSel) {
-    var cur2 = addSel.value;
-    addSel.innerHTML = '<option value="">Select category</option>' +
-      SVC_CATEGORIES.map(function(c){ return '<option' + (c === cur2 ? ' selected' : '') + '>' + c + '</option>'; }).join('');
-  }
-}
-
+// ── CATEGORY MANAGER FUNCTIONS ──
 function openCatManager() {
   renderCatList();
   document.getElementById('cat-manager-modal').classList.add('open');
@@ -3213,7 +3208,7 @@ function renderCatList() {
       '<input type="text" value="' + cat.replace(/"/g,'&quot;') + '" data-idx="' + idx + '" ' +
         'style="flex:1;border:none;background:transparent;font-size:13px;font-family:DM Sans,sans-serif;color:var(--text-primary);outline:none" ' +
         'onblur="renameCategory(this)" onkeydown="if(event.key==='Enter')this.blur()">' +
-      '<button onclick="deleteCategory(' + idx + ')" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text-muted);padding:2px 4px" title="Delete category">🗑️</button>';
+      '<button onclick="deleteCategory(' + idx + ')" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text-muted);padding:2px 4px" title="Delete">🗑️</button>';
     list.appendChild(item);
   });
 }
@@ -3236,7 +3231,6 @@ function renameCategory(inp) {
   if (!newName || newName === SVC_CATEGORIES[idx]) return;
   var old = SVC_CATEGORIES[idx];
   SVC_CATEGORIES[idx] = newName;
-  // Update CAT_COLORS mapping
   if (CAT_COLORS[old]) { CAT_COLORS[newName] = CAT_COLORS[old]; }
   rebuildCatDropdowns();
   renderCatList();
@@ -3245,18 +3239,12 @@ function renameCategory(inp) {
 
 function deleteCategory(idx) {
   var cat = SVC_CATEGORIES[idx];
-  if (!confirm('Remove category "' + cat + '"? Existing services using it will keep the label.')) return;
+  if (!confirm('Remove category "' + cat + '"?\nExisting services using it will keep their label.')) return;
   SVC_CATEGORIES.splice(idx, 1);
   rebuildCatDropdowns();
   renderCatList();
   showToast('🗑️ Category "' + cat + '" removed.');
 }
-
-// Init dropdowns on load
-document.addEventListener('DOMContentLoaded', function() {
-  rebuildCatDropdowns();
-});
-
 </script>
 
 <!-- CATEGORY MANAGER MODAL -->
