@@ -918,6 +918,7 @@
         <div style="color:var(--text-muted);font-size:13px;font-style:italic;padding:10px 0">No action items at this time.</div>
       </div>
     </div>
+
   <!-- ═══════════ NEW REQUEST ═══════════ -->
   <div id="page-new-request" class="page">
     <div class="page-header">
@@ -2523,28 +2524,33 @@ function exportInventory() {
   showToast('📥 Inventory exported as CSV!');
 }
 
-document.getElementById('req-date').value = new Date().toISOString().split('T')[0];
-document.getElementById('recv-date').value = new Date().toISOString().split('T')[0];
-// ── RENDER SERVICES TABLE ON LOAD ────────────────────────────────────────────
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
+  // Set default dates
+  var reqDate = document.getElementById('req-date');
+  var recvDate = document.getElementById('recv-date');
+  if (reqDate) reqDate.value = new Date().toISOString().split('T')[0];
+  if (recvDate) recvDate.value = new Date().toISOString().split('T')[0];
+
+  // Render SERVICES table
   var tbody = document.getElementById('svc-tbody');
   var emptyRow = document.getElementById('svc-empty-row');
-  if (!tbody || !SERVICES || !SERVICES.length) return;
-  if (emptyRow) emptyRow.remove();
-  SERVICES.forEach(function(s) {
-    var tr = document.createElement('tr');
-    tr.innerHTML =
-      '<td style="padding:8px 14px;font-size:12px;font-weight:600;color:var(--blue-primary)">' + s.cat + '</td>' +
-      '<td style="padding:8px 14px;font-size:13px;font-weight:600">' + s.name + '</td>' +
-      '<td style="padding:8px 14px;font-size:13px;color:var(--text-secondary)">' + s.dept + '</td>' +
-      '<td style="padding:8px 14px;font-size:13px">' + s.sub + '</td>' +
-      '<td style="padding:8px 14px;font-size:13px;font-family:monospace">' + s.card + '</td>' +
-      '<td style="padding:8px 14px;font-size:12px;color:var(--text-muted)">' + (s.comments || '—') + '</td>';
-    tbody.appendChild(tr);
-  });
-  var countEl = document.getElementById('svc-count');
-  if (countEl) countEl.textContent = SERVICES.length + ' services & licences';
-})();
+  if (tbody && typeof SERVICES !== 'undefined' && SERVICES.length) {
+    if (emptyRow) emptyRow.remove();
+    SERVICES.forEach(function(s) {
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td style="padding:8px 14px;font-size:12px;font-weight:600;color:var(--blue-primary)">' + s.cat + '</td>' +
+        '<td style="padding:8px 14px;font-size:13px;font-weight:600">' + s.name + '</td>' +
+        '<td style="padding:8px 14px;font-size:13px;color:var(--text-secondary)">' + s.dept + '</td>' +
+        '<td style="padding:8px 14px;font-size:13px">' + s.sub + '</td>' +
+        '<td style="padding:8px 14px;font-size:13px;font-family:monospace">' + s.card + '</td>' +
+        '<td style="padding:8px 14px;font-size:12px;color:var(--text-muted)">' + (s.comments || '—') + '</td>';
+      tbody.appendChild(tr);
+    });
+    var countEl = document.getElementById('svc-count');
+    if (countEl) countEl.textContent = SERVICES.length + ' services & licences';
+  }
+});
 </script>
 
 <!-- ADD ITEM MODAL -->
