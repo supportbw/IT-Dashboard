@@ -834,7 +834,6 @@
   </div>
   <div class="nav-item" onclick="showPage('order-log')">
     <span class="nav-icon">📊</span> Order Log
-    <span class="nav-badge">3</span>
   </div>
   <div class="nav-item" onclick="showPage('receive-goods')">
     <span class="nav-icon">📦</span> Receive Goods
@@ -854,7 +853,7 @@
   <div class="nav-section-label">Support</div>
   <div class="nav-item" onclick="showPage('tasks')">
     <span class="nav-icon">✅</span> IT Task Board
-    <span class="nav-badge" id="task-badge">4</span>
+    <span class="nav-badge" id="task-badge" style="display:none">0</span>
   </div>
 
 
@@ -1663,7 +1662,7 @@
       <div class="task-column col-todo" id="col-todo">
         <div class="task-col-header">
           <span class="task-col-title">To Do</span>
-          <span class="task-col-count" id="badge-todo">4</span>
+          <span class="task-col-count" id="badge-todo">0</span>
         </div>
         <div class="task-cards" id="cards-todo">
           <p style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px 0;font-style:italic">No tasks</p>
@@ -1675,7 +1674,7 @@
       <div class="task-column col-inprog" id="col-inprog">
         <div class="task-col-header">
           <span class="task-col-title">In Progress</span>
-          <span class="task-col-count" id="badge-inprog">3</span>
+          <span class="task-col-count" id="badge-inprog">0</span>
         </div>
         <div class="task-cards" id="cards-inprog">
           <p style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px 0;font-style:italic">No tasks</p>
@@ -1687,7 +1686,7 @@
       <div class="task-column col-review" id="col-review">
         <div class="task-col-header">
           <span class="task-col-title">In Review</span>
-          <span class="task-col-count" id="badge-review">2</span>
+          <span class="task-col-count" id="badge-review">0</span>
         </div>
         <div class="task-cards" id="cards-review">
           <p style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px 0;font-style:italic">No tasks</p>
@@ -1699,7 +1698,7 @@
       <div class="task-column col-done" id="col-done">
         <div class="task-col-header">
           <span class="task-col-title">Done</span>
-          <span class="task-col-count" id="badge-done">5</span>
+          <span class="task-col-count" id="badge-done">0</span>
         </div>
         <div class="task-cards" id="cards-done">
           <p style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px 0;font-style:italic">No tasks</p>
@@ -2271,7 +2270,7 @@ function updateCounts() {
     if(col === 'todo') todoCount = n;
   });
   const nb = document.getElementById('task-badge');
-  if(nb) nb.textContent = todoCount;
+  if(nb) { nb.textContent = todoCount; nb.style.display = todoCount > 0 ? '' : 'none'; }
 }
 
 function viewTask(btn) {
@@ -2533,6 +2532,26 @@ function exportInventory() {
 document.getElementById('req-date').value = new Date().toISOString().split('T')[0];
 document.getElementById('recv-date').value = new Date().toISOString().split('T')[0];
 
+// ── RENDER SERVICES TABLE ON LOAD ─────────────────────────────────────────────
+(function() {
+  var tbody = document.getElementById('svc-tbody');
+  var emptyRow = document.getElementById('svc-empty-row');
+  if (!tbody || !SERVICES || !SERVICES.length) return;
+  if (emptyRow) emptyRow.remove();
+  SERVICES.forEach(function(s) {
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td style="padding:8px 14px;font-size:12px;font-weight:600;color:var(--blue-primary)">' + s.cat + '</td>' +
+      '<td style="padding:8px 14px;font-size:13px;font-weight:600">' + s.name + '</td>' +
+      '<td style="padding:8px 14px;font-size:13px;color:var(--text-secondary)">' + s.dept + '</td>' +
+      '<td style="padding:8px 14px;font-size:13px">' + s.sub + '</td>' +
+      '<td style="padding:8px 14px;font-size:13px;font-family:monospace">' + s.card + '</td>' +
+      '<td style="padding:8px 14px;font-size:12px;color:var(--text-muted)">' + (s.comments || '—') + '</td>';
+    tbody.appendChild(tr);
+  });
+  var countEl = document.getElementById('svc-count');
+  if (countEl) countEl.textContent = SERVICES.length + ' services & licences';
+})();
 // ── DASHBOARD SYSTEM HEALTH CARD ─────────────────────────────────────────────
 (function() {
   var CHECKS = [
