@@ -2578,17 +2578,37 @@ function openAddDeviceModal() {
 }
 
 function addDeviceToInventory() {
-  const model    = document.getElementById('ad-model').value.trim();
-  const serial   = document.getElementById('ad-serial').value.trim();
-  const type     = document.getElementById('ad-type').value;
-  const assigned = document.getElementById('ad-assigned').value.trim();
-  const dept     = document.getElementById('ad-dept').value;
-  const approved = document.getElementById('ad-approved').value.trim();
-  const date     = document.getElementById('ad-date').value;
-  const status   = document.getElementById('ad-status').value;
-  const comments = document.getElementById('ad-comments').value.trim();
+  var category = document.getElementById('ad-device-req').value;
+  var model    = document.getElementById('ad-model').value.trim();
+  var serial   = (document.getElementById('ad-serial') || {}).value ? document.getElementById('ad-serial').value.trim() : '';
+  var type     = document.getElementById('ad-type').value;
+  var assigned = document.getElementById('ad-assigned').value.trim();
+  var dept     = document.getElementById('ad-dept').value;
+  var approved = document.getElementById('ad-approved').value.trim();
+  var date     = document.getElementById('ad-date').value;
+  var status   = document.getElementById('ad-status').value;
+  var comments = document.getElementById('ad-comments').value.trim();
+  var by       = document.getElementById('ad-by').value.trim();
 
-  if(!model || !serial) { alert('Please enter at least a Model and Serial Number.'); return; }
+  if (!model) { alert('Please enter a name / description.'); return; }
+
+  // Route Program or Service → Services & Licences tab
+  if (category === 'Program or Service') {
+    addReceivedService(model, by || '—', dept || '—', date || new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}));
+    // Switch to services tab so user can see it
+    switchInventoryTab('services');
+    document.getElementById('add-device-modal').classList.remove('open');
+    // Reset form fields
+    ['ad-model','ad-by','ad-approved','ad-comments','ad-serial'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+    var dq = document.getElementById('ad-device-req'); if(dq) dq.value='';
+    var dp = document.getElementById('ad-dept'); if(dp) dp.value='';
+    syncAdType('');
+    showToast('🔧 Service added to Services & Licences tab!');
+    return;
+  }
+
+  // Device path — serial not mandatory but warn
+  if (!serial) serial = '—';
 
   const typeIcons   = {Laptop:'💻',Phone:'📱',Tablet:'📋',Monitor:'🖥️',Accessory:'🔌',Other:'📦'};
   const typeClasses = {Laptop:'type-laptop',Phone:'type-phone',Tablet:'type-tablet',Monitor:'type-monitor',Accessory:'type-acc',Other:'type-acc'};
@@ -2737,10 +2757,35 @@ function editDevice(btn) {
 }
 
 function syncAdType(val) {
-  // Map category to internal type for hidden field
   var map = {'Computer':'Laptop','Laptop':'Laptop','Device':'Other','Program or Service':'Other'};
   var el = document.getElementById('ad-type');
   if (el) el.value = map[val] || 'Other';
+
+  var isService = val === 'Program or Service';
+
+  // Toggle device-only fields
+  var deviceOnlyIds = ['ad-serial','ad-status','ad-photo-upload-zone','ad-photo-preview','ad-photo-remove'];
+  var deviceOnlyLabels = ['Serial Number','Status *','Device Photo'];
+
+  // Wrap rows to show/hide: serial row, status row, photo row, date rows
+  var fieldsToHide = ['ad-serial-wrap','ad-status-wrap','ad-photo-wrap','ad-dates-wrap','ad-assigned-wrap'];
+  fieldsToHide.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = isService ? 'none' : '';
+  });
+
+  // Update button label and model placeholder
+  var btn = document.querySelector('[onclick="addDeviceToInventory()"]');
+  if (btn) btn.innerHTML = isService ? '🔧 Add Service' : '🖥️ Add Device';
+
+  var modelInp = document.getElementById('ad-model');
+  if (modelInp) {
+    modelInp.placeholder = isService
+      ? 'e.g. Adobe Creative Cloud, Salesforce, RingOver...'
+      : 'e.g. Apple MacBook Pro 14" M3 Pro 18GB 512GB Space Grey';
+  }
+  var modelLabel = document.getElementById('ad-model-label');
+  if (modelLabel) modelLabel.textContent = isService ? 'Service / Licence Name *' : 'Model / Full Description *';
 }
 
 function editSvcRow(btn) {
@@ -2975,10 +3020,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <input type="hidden" id="ad-type" value="Other">
           </div>
           <div class="form-group">
-            <label>Model / Full Description *</label>
+            <label id="ad-model-label">Model / Full Description *</label>
             <input type="text" id="ad-model" placeholder='e.g. Apple MacBook Pro 14" M3 Pro 18GB 512GB Space Grey'>
           </div>
-          <div class="form-grid form-grid-2">
+          <div class="form-grid form-grid-2" id="ad-serial-wrap">
             <div class="form-group">
               <label>Serial Number</label>
               <input type="text" id="ad-serial" placeholder="e.g. C02XG2JNHV2R" style="font-family:monospace">
@@ -2991,7 +3036,7 @@ document.addEventListener('DOMContentLoaded', function() {
               </select>
             </div>
           </div>
-          <div class="form-grid form-grid-2">
+          <div class="form-grid form-grid-2" id="ad-assigned-wrap">
             <div class="form-group">
               <label>Assigned To</label>
               <input type="text" id="ad-assigned" placeholder="Full name or leave blank">
@@ -3001,7 +3046,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <input type="date" id="ad-date">
             </div>
           </div>
-          <div class="form-grid form-grid-2">
+          <div class="form-grid form-grid-2" id="ad-dates-wrap">
             <div class="form-group">
               <label>Request Date</label>
               <input type="date" id="ad-req-date">
@@ -3017,7 +3062,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <option>Standard</option><option>Urgent</option><option>Low</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" id="ad-photo-wrap">
             <label>Device Photo <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
             <div class="photo-upload-zone" id="ad-photo-upload-zone" style="display:flex;flex-direction:column;align-items:center" onclick="document.getElementById('ad-photo-input').click()">
               <input type="file" id="ad-photo-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
