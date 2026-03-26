@@ -911,53 +911,18 @@
           </tbody>
         </table>
       </div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
-              <span>OneDrive / SharePoint</span><span style="color:var(--success);font-weight:600">● Operational</span>
-            </div>
-            <div class="health-bar"><div class="health-fill fill-ok" style="width:97%"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
-              <span>Microsoft Teams</span><span style="color:var(--success);font-weight:600">● Operational</span>
-            </div>
-            <div class="health-bar"><div class="health-fill fill-ok" style="width:100%"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
-              <span>bluewateryachting.com</span><span style="color:var(--warning);font-weight:600">⚠ Degraded</span>
-            </div>
-            <div class="health-bar"><div class="health-fill fill-warn" style="width:72%"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
-              <span>Azure AD / Entra ID</span><span style="color:var(--success);font-weight:600">● Operational</span>
-            </div>
-            <div class="health-bar"><div class="health-fill fill-ok" style="width:100%"></div></div>
-          </div>
+      <div class="card">
+        <div class="card-title">🖥️ System Health</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:4px" id="dash-health-list">
+          <div style="color:var(--text-muted);font-size:13px;font-style:italic">Loading…</div>
         </div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">🔔 Action Items</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff5d6;border-radius:8px;border:1px solid #ffe0a0">
-          <span>⚠️</span>
-          <div style="flex:1;font-size:13px"><b>Website degraded performance</b> — bluewateryachting.com response time elevated. Investigation recommended.</div>
-          <button class="btn btn-sm" style="background:#dd8800;color:white">Investigate</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#dce8ff;border-radius:8px;border:1px solid #b0caff">
-          <span>📦</span>
-          <div style="flex:1;font-size:13px"><b>2 devices ready for collection</b> — Notify James Whitfield (iPhone 16 Pro) and Carla Rossi (Monitor).</div>
-          <button class="btn btn-sm btn-primary">Send Notifications</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#d4f4e7;border-radius:8px;border:1px solid #a0ddbb">
-          <span>✅</span>
-          <div style="flex:1;font-size:13px">New starter <b>Emma Nakamura</b> joining 10 Mar 2026 — Onboarding setup pending.</div>
-          <button class="btn btn-sm btn-success" onclick="showPage('onboarding')">Start Onboarding</button>
-        </div>
+      <div id="dash-action-items" style="display:flex;flex-direction:column;gap:8px">
+        <div style="color:var(--text-muted);font-size:13px;font-style:italic;padding:10px 0">No action items at this time.</div>
       </div>
     </div>
   </div>
@@ -1549,7 +1514,7 @@
             <label>Employee Name *</label>
             <select>
               <option value="">Select employee</option>
-              <option>James Whitfield — Sales</option>
+              <option>— Select staff member —</option>
               <option>Carla Rossi — Operations</option>
               <option>Sophie Laurent — Charter</option>
               <option>Tom Bergström — Marketing</option>
@@ -1602,7 +1567,7 @@
 
       <div class="card">
         <div class="card-title">💻 Hardware to Retrieve</div>
-        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Items assigned to James Whitfield — mark each as retrieved</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">Items assigned to selected staff member — mark each as retrieved</div>
 
         <div class="hardware-item">
           <input type="checkbox" class="hw-check">
@@ -2010,7 +1975,7 @@
 </div>
 
 <!-- TOAST -->
-<div class="toast" id="toast"></div><script>
+<div class="toast" id="toast"></div><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Navigation
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -2569,6 +2534,44 @@ function exportInventory() {
 
 document.getElementById('req-date').value = new Date().toISOString().split('T')[0];
 document.getElementById('recv-date').value = new Date().toISOString().split('T')[0];
+
+// ── DASHBOARD SYSTEM HEALTH CARD ─────────────────────────────────────────────
+(function() {
+  const CHECKS = [
+    { name: 'Exchange Online (Email)', url: 'https://outlook.office.com' },
+    { name: 'Microsoft Teams',         url: 'https://teams.microsoft.com' },
+    { name: 'OneDrive / SharePoint',   url: 'https://onedrive.live.com' },
+    { name: 'bluewateryachting.com',   url: 'https://www.bluewateryachting.com' }
+  ];
+
+  function renderDashHealth(results) {
+    const el = document.getElementById('dash-health-list');
+    if (!el) return;
+    el.innerHTML = results.map(r => {
+      const dot   = r.ok ? '<span style="color:var(--success);font-weight:700">●</span>' : '<span style="color:var(--warning);font-weight:700">⚠</span>';
+      const label = r.ok ? '<span style="color:var(--success);font-weight:600;font-size:12px">Operational</span>' : '<span style="color:var(--warning);font-weight:600;font-size:12px">Degraded</span>';
+      const pct   = r.ok ? 100 : 65;
+      const cls   = r.ok ? 'fill-ok' : 'fill-warn';
+      return '<div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:5px">' +
+          '<span style="display:flex;align-items:center;gap:6px">' + dot + ' ' + r.name + '</span>' + label +
+        '</div>' +
+        '<div class="health-bar"><div class="health-fill ' + cls + '" style="width:' + pct + '%"></div></div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function runDashHealth() {
+    Promise.all(CHECKS.map(c =>
+      fetch(c.url, { method: 'HEAD', mode: 'no-cors', cache: 'no-store', signal: AbortSignal.timeout(6000) })
+        .then(() => ({ name: c.name, ok: true }))
+        .catch(() => ({ name: c.name, ok: false }))
+    )).then(renderDashHealth);
+  }
+
+  runDashHealth();
+  setInterval(runDashHealth, 120000);
+})();
 </script>
 
 <!-- ADD ITEM MODAL -->
@@ -2817,63 +2820,4 @@ document.getElementById('recv-date').value = new Date().toISOString().split('T')
 function handlePhotoUpload(input) {
   if(!input.files || !input.files[0]) return;
   const file = input.files[0];
-  if(file.size > 5 * 1024 * 1024) { alert('File is too large. Maximum size is 5MB.'); return; }
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const preview = document.getElementById('ad-photo-preview');
-    const remove  = document.getElementById('ad-photo-remove');
-    const zone    = document.getElementById('ad-photo-upload-zone');
-    preview.src = e.target.result;
-    preview.style.display = 'block';
-    remove.style.display  = 'flex';
-    zone.style.display    = 'none';
-  };
-  reader.readAsDataURL(file);
-}
-
-function removePhoto() {
-  var preview = document.getElementById('ad-photo-preview');
-  var remove  = document.getElementById('ad-photo-remove');
-  var zone    = document.getElementById('ad-photo-upload-zone');
-  preview.src = ''; preview.style.display = 'none';
-  remove.style.display = 'none';
-  zone.style.display   = 'flex';
-  document.getElementById('ad-photo-input').value = '';
-}
-
-function triggerPhotoUpload(el) {
-  // For existing rows — open a file picker and update the cell
-  var input = document.createElement('input');
-  input.type = 'file'; input.accept = 'image/*';
-  input.onchange = function() {
-    if(!input.files[0]) return;
-    if(input.files[0].size > 5*1024*1024) { alert('Max 5MB'); return; }
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var cell = el.closest('td');
-      cell.innerHTML = '<img class="dev-thumb" src="' + e.target.result + '" title="Click to enlarge" onclick="openLightbox(this)">';
-    };
-    reader.readAsDataURL(input.files[0]);
-  };
-  input.click();
-}
-
-function openLightbox(img) {
-  var row = img.closest('tr');
-  var modelCell = row ? row.cells[3] : null;
-  var caption = modelCell ? modelCell.textContent.trim().split('\n')[0] : 'Device Photo';
-  document.getElementById('lightbox-img').src = img.src;
-  document.getElementById('lightbox-caption').textContent = caption;
-  document.getElementById('lightbox').classList.add('open');
-}
-
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
-
-document.getElementById('lightbox').addEventListener('click', function(e) {
-  if(e.target === this) closeLightbox();
-});
-</script>
-</body>
-</html>
+  if(file.size > 5 * 1024 * 1024) { alert('File is too large. Maximum 
